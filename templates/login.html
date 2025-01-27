@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Signup</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto;
+            color: #4F46E5;
+            background: #EEF2FF;
+            border-radius: 50%;
+            padding: 12px;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            color: #111827;
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #6B7280;
+            font-size: 0.875rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: #9CA3AF;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #E5E7EB;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #4F46E5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .remember-forgot {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 1rem 0;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 0.25rem;
+            border: 1px solid #E5E7EB;
+            accent-color: #4F46E5;
+        }
+
+        .forgot {
+            color: #4F46E5;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .forgot:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(to right, #4F46E5, #4338CA);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #4338CA, #3730A3);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .toggle {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: #6B7280;
+        }
+
+        .toggle a {
+            color: #4F46E5;
+            font-weight: 500;
+            text-decoration: none;
+            margin-left: 0.25rem;
+        }
+
+        .toggle a:hover {
+            text-decoration: underline;
+        }
+
+        #signup-form {
+            display: none;
+        }
+
+        .visible {
+            display: block !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- Login Form -->
+            <form id="login-form" action="/login" method="POST">
+                <div class="header">
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                        </svg>
+                    </div>
+                    <h2>Welcome back</h2>
+                    <p class="subtitle">Please enter your details to sign in</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <div class="input-group">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        <input type="email" id="login-email" name="email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <div class="input-group">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+                    </div>
+                </div>
+
+                <div class="remember-forgot">
+                    <div class="remember">
+                        <input type="checkbox" id="remember-me">
+                        <label for="remember-me">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot">Forgot password?</a>
+                </div>
+
+                <button type="submit">Login</button>
+
+                <p class="toggle">
+                    Don't have an account?
+                    <a href="#" onclick="toggleForms('signup'); return false;">Sign up</a>
+                </p>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signup-form" action="/register" method="POST">
+                <div class="header">
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                        </svg>
+                    </div>
+                    <h2>Create account</h2>
+                    <p class="subtitle">Enter your details to get started</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <div class="input-group">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        <input type="email" id="signup-email" name="email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <div class="input-group">
+                        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        <input type="password" id="signup-password" name="password" placeholder="Create a password" required>
+                    </div>
+                </div>
+
+                <button type="submit">Create account</button>
+
+                <p class="toggle">
+                    Already have an account?
+                    <a href="#" onclick="toggleForms('login'); return false;">Login</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script defer type="module">
+        import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+        import { auth } from "./fire.js";
+
+        const loginForm = document.getElementById("login-form");
+        const signupForm = document.getElementById("signup-form");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        const user = auth.currentUser;
+        if (user) {
+          // User is logged in
+          window.location.href = "index.html";
+        }
+
+        loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const email = document.getElementById("login-email").value;
+            const password = document.getElementById("login-password").value;
+            if (email === "" || password === "") {
+                alert("Please fill in all fields");
+                return;
+            }
+            else {
+                console.log("login form submitted");
+                signInWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        const user = userCredential.user;
+                        localStorage.setItem("user", JSON.stringify(user));
+                        window.location.href = "index.html";
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        alert(errorMessage);
+                    });
+            }
+        });
+
+        signupForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const email = document.getElementById("signup-email").value;
+            const password = document.getElementById("signup-password").value;
+            if (email === "" || password === "") {
+                alert("Please fill in all fields");
+                return;
+            }
+            else {
+                console.log("signup form submitted");
+                createUserWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        // Signed in
+                        const user = userCredential.user;
+                        alert("User created successfully");
+                        localStorage.setItem("user", JSON.stringify(user));
+                        window.location.href = "index.html";
+                        // ...
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        alert(errorMessage);
+                    });
+            }
+        });
+
+        // Logout functionality
+        logoutBtn.addEventListener("click", () => {
+            signOut(auth)
+                .then(() => {
+                    // Sign-out successful
+                    console.log("User signed out");
+                    localStorage.removeItem("user");
+                    window.location.href = "login.html";
+                })
+                .catch((error) => {
+                    // An error occurred
+                    console.error("Error signing out:", error);
+                });
+        });
+    </script>
+</body>
+</html>
