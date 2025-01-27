@@ -4,7 +4,7 @@ import { getDatabase, ref as dbRef, push as dbPush, onValue } from 'https://www.
 import { getStorage } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCwj12v8_5Tfw_v8dqiwlMimAPVFK1z9rU",
+    apiKey: "yourapikey",
     authDomain: "authentication-d3540.firebaseapp.com",
     databaseURL: "https://authentication-d3540-default-rtdb.firebaseio.com",
     projectId: "authentication-d3540",
