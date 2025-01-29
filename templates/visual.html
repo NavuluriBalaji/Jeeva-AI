@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disease Classifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Disease Classifier</h1>
+        <div class="cards">
+            <form action="/classify" method="POST" enctype="multipart/form-data">
+                <div class="card">
+                    <h2>Breast Cancer</h2>
+                    <input type="file" name="file" accept=".png,.jpg,.jpeg" required>
+                    <input type="hidden" name="model" value="breast_cancer">
+                    <button type="submit">Check</button>
+                </div>
+            </form>
+            <form action="/classify" method="POST" enctype="multipart/form-data">
+                <div class="card">
+                    <h2>Skin Cancer</h2>
+                    <input type="file" name="file" accept=".png,.jpg,.jpeg" required>
+                    <input type="hidden" name="model" value="skin_cancer">
+                    <button type="submit">Check</button>
+                </div>
+            </form>
+            <form action="/classify" method="POST" enctype="multipart/form-data">
+                <div class="card">
+                    <h2>Brain Tumor</h2>
+                    <input type="file" name="file" accept=".png,.jpg,.jpeg" required>
+                    <input type="hidden" name="model" value="brain_tumor">
+                    <button type="submit">Check</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Signup</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .auth-section {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .auth-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 15px 45px -10px rgba(0, 0, 0, 0.12);
+        }
+
+        .auth-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .auth-subtitle {
+            color: #6B7280;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 0.975rem;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 1.25rem;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9CA3AF;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 3rem;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            background: #F9FAFB;
+            box-sizing: border-box;
+        }
+
+        .auth-input:focus {
+            outline: none;
+            border-color: #2563EB;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .auth-button {
+            width: 100%;
+            padding: 0.875rem;
+            background: #2563EB;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 1rem;
+        }
+
+        .auth-button:hover {
+            background: #1D4ED8;
+        }
+
+        .auth-footer {
+            margin-top: 1.75rem;
+            text-align: center;
+            color: #6B7280;
+            font-size: 0.95rem;
+        }
+
+        .auth-link {
+            color: #2563EB;
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 0.5rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .auth-link:hover {
+            color: #1D4ED8;
+            text-decoration: underline;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            color: #6B7280;
+            font-size: 0.95rem;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 4px;
+            border: 1px solid #D1D5DB;
+            cursor: pointer;
+            accent-color: #2563EB;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .auth-section {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Section -->
+        <section id="login" class="auth-section">
+            <h2 class="auth-title">Welcome back</h2>
+            <p class="auth-subtitle">Sign in to your account</p>
+            
+            <form id="login-form">
+                <div class="input-group">
+                    <i data-lucide="mail"></i>
+                    <input type="email" class="auth-input" placeholder="Email address" required>
+                </div>
+                
+                <div class="input-group">
+                    <i data-lucide="lock"></i>
+                    <input type="password" class="auth-input" placeholder="Password" required>
+                </div>
+                
+                <div class="remember-me">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+                
+                <button type="submit" class="auth-button">Sign in</button>
+            </form>
+            
+            <div class="auth-footer">
+                <span>Don't have an account?</span>
+                <a href="#signup" class="auth-link" onclick="toggleSections('signup')">Sign up</a>
+            </div>
+        </section>
+
+        <!-- Signup Section -->
+        <section id="signup" class="auth-section" style="display: none;">
+            <h2 class="auth-title">Create Account</h2>
+            <p class="auth-subtitle">Join us today</p>
+            
+            <form id="signup-form">
+                <div class="input-group">
+                    <i data-lucide="mail"></i>
+                    <input type="email" class="auth-input" placeholder="Email address" required>
+                </div>
+                
+                <div class="input-group">
+                    <i data-lucide="lock"></i>
+                    <input type="password" class="auth-input" placeholder="Create a strong password" required>
+                </div>
+                
+                <button type="submit" class="auth-button">Create account</button>
+            </form>
+            
+            <div class="auth-footer">
+                <span>Already have an account?</span>
+                <a href="#login" class="auth-link" onclick="toggleSections('login')">Sign in</a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Initialize Lucide icons -->
+    <script>
+        lucide.createIcons();
+
+        // Toggle between login and signup sections
+        function toggleSections(showSection) {
+            const loginSection = document.getElementById('login');
+            const signupSection = document.getElementById('signup');
+            
+            if (showSection === 'login') {
+                loginSection.style.display = 'block';
+                signupSection.style.display = 'none';
+            } else {
+                loginSection.style.display = 'none';
+                signupSection.style.display = 'block';
+            }
+        }
+    </script>
+
+    <!-- Firebase Authentication -->
+    <script type="module">
+        import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+        import { auth } from "./static/js/fire.js";
+
+        const loginForm = document.getElementById("login-form");
+        const signupForm = document.getElementById("signup-form");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        const user = auth.currentUser;
+        if (user) {
+            window.location.href = "{{ url_for('index') }}";
+        }
+
+        loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const email = loginForm.querySelector('input[type="email"]').value;
+            const password = loginForm.querySelector('input[type="password"]').value;
+            
+            if (!email || !password) {
+                alert("Please fill in all fields");
+                return;
+            }
+            
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    localStorage.setItem("user", JSON.stringify(user));
+                    window.location.href = "{{ url_for('index') }}";
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
+        });
+
+        signupForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const email = signupForm.querySelector('input[type="email"]').value;
+            const password = signupForm.querySelector('input[type="password"]').value;
+            
+            if (!email || !password) {
+                alert("Please fill in all fields");
+                return;
+            }
+            
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    alert("User created successfully");
+                    localStorage.setItem("user", JSON.stringify(user));
+                    window.location.href = "{{ url_for('index') }}";
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
+        });
+
+        if (logoutBtn) {
+            logoutBtn.addEventListener("click", () => {
+                signOut(auth)
+                    .then(() => {
+                        localStorage.removeItem("user");
+                        window.location.href = "{{ url_for('index') }}";
+                    })
+                    .catch((error) => {
+                        console.error("Error signing out:", error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

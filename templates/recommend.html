@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .symptoms {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-gap: 20px;
+            margin-top: 20px;
+        }
+
+        .box {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .get-recommendations {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .get-recommendations:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="symptoms">
+            <h2>Selected Symptoms</h2>
+            <p>{{ symptoms }}</p>
+        </div>
+
+        <div class="grid-container">
+            <div class="box disease">
+                <h2>Predicted Disease</h2>
+                <p>{{ predicted_disease }}</p>
+                <h3>Description</h3>
+                <p>{{ dis_des }}</p>
+            </div>
+            <div class="box medications">
+                <h2>Medications</h2>
+                <ul>
+                    {% for med in medications %}
+                        <li>{{ med }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="box precautions">
+                <h2>Precautions</h2>
+                <ul>
+                    {% for precaution in my_precautions %}
+                        <li>{{ precaution }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="box diet">
+                <h2>Diet Plan</h2>
+                <p>{{ my_diet }}</p>
+            </div>
+            <div class="box workout">
+                <h2>Workout</h2>
+                <p>{{ workout }}</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
