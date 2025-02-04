@@ -19,8 +19,8 @@
 
         .container {
             max-width: 1200px;
-            width: 90%;
-            margin: 0 auto;
+            width: 25%;
+            margin: auto;
             display: flex;
             gap: 2rem;
         }
@@ -233,17 +233,34 @@
 
     <!-- Firebase Authentication -->
     <script type="module">
-        import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+        import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
         import { auth } from "./static/js/fire.js";
 
         const loginForm = document.getElementById("login-form");
         const signupForm = document.getElementById("signup-form");
-        const logoutBtn = document.getElementById("logoutBtn");
 
-        const user = auth.currentUser;
-        if (user) {
-            window.location.href = "{{ url_for('index') }}";
-        }
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('login').style.display = 'none';
+                document.getElementById('signup').style.display = 'none';
+                const userNameDisplay = document.createElement('div');
+                userNameDisplay.className = 'auth-section';
+                userNameDisplay.innerHTML = `<h2 class="auth-title">Welcome, ${user.email}</h2>
+                                             <button id="logoutBtn" class="auth-button">Logout</button>`;
+                document.querySelector('.container').appendChild(userNameDisplay);
+
+                document.getElementById("logoutBtn").addEventListener("click", () => {
+                    signOut(auth)
+                        .then(() => {
+                            localStorage.removeItem("user");
+                            window.location.href = "{{ url_for('index') }}";
+                        })
+                        .catch((error) => {
+                            console.error("Error signing out:", error);
+                        });
+                });
+            }
+        });
 
         loginForm.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -287,19 +304,6 @@
                     alert(error.message);
                 });
         });
-
-        if (logoutBtn) {
-            logoutBtn.addEventListener("click", () => {
-                signOut(auth)
-                    .then(() => {
-                        localStorage.removeItem("user");
-                        window.location.href = "{{ url_for('index') }}";
-                    })
-                    .catch((error) => {
-                        console.error("Error signing out:", error);
-                    });
-            });
-        }
     </script>
 </body>
 </html>

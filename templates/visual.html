@@ -1,40 +1,231 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Disease Classifier</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1 class="title">Disease Classifier</h1>
-        <div class="cards">
-            <form action="/classify" method="POST" enctype="multipart/form-data">
-                <div class="card">
-                    <h2>Breast Cancer</h2>
-                    <input type="file" name="file" accept=".png,.jpg,.jpeg" required>
-                    <input type="hidden" name="model" value="breast_cancer">
-                    <button type="submit">Check</button>
-                </div>
-            </form>
-            <form action="/classify" method="POST" enctype="multipart/form-data">
-                <div class="card">
-                    <h2>Skin Cancer</h2>
-                    <input type="file" name="file" accept=".png,.jpg,.jpeg" required>
-                    <input type="hidden" name="model" value="skin_cancer">
-                    <button type="submit">Check</button>
-                </div>
-            </form>
-            <form action="/classify" method="POST" enctype="multipart/form-data">
-                <div class="card">
-                    <h2>Brain Tumor</h2>
-                    <input type="file" name="file" accept=".png,.jpg,.jpeg" required>
-                    <input type="hidden" name="model" value="brain_tumor">
-                    <button type="submit">Check</button>
-                </div>
-            </form>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body>
+    <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+          <h1 class="text-4xl font-bold text-gray-900 mb-4">
+            Disease Classifier
+          </h1>
+          <p class="text-lg text-gray-600">
+            Upload medical images for AI-powered disease detection
+          </p>
         </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Breast Cancer Card -->
+          <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+            <div class="p-8">
+              <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
+                <i data-lucide="heart" class="w-6 h-6 text-indigo-600"></i>
+              </div>
+              <h2 class="text-2xl font-semibold text-gray-900 mb-2">
+                Breast Cancer
+              </h2>
+              <p class="text-gray-600 mb-6">
+                Upload mammogram images for breast cancer detection
+              </p>
+              
+              <form action="/classify" method="POST" enctype="multipart/form-data">
+                <div class="space-y-4">
+                  <div class="relative">
+                    <input
+                      type="file"
+                      name="file"
+                      accept=".png,.jpg,.jpeg"
+                      required
+                      class="hidden"
+                      id="file-breast_cancer"
+                      onchange="previewImage(event, 'preview-breast_cancer')"
+                    />
+                    <input type="hidden" name="model" value="breast_cancer" />
+                    <label
+                      for="file-breast_cancer"
+                      class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+                    >
+                      <i data-lucide="upload" class="w-5 h-5 mr-2 text-gray-500"></i>
+                      <span class="text-gray-600">Choose file</span>
+                    </label>
+                  </div>
+                  <img id="preview-breast_cancer" class="hidden w-full mt-4 rounded-lg" />
+                  <button
+                    type="submit"
+                    class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200"
+                  >
+                    Analyze
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Skin Cancer Card -->
+          <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+            <div class="p-8">
+              <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
+                <i data-lucide="pin" class="w-6 h-6 text-indigo-600"></i>
+              </div>
+              <h2 class="text-2xl font-semibold text-gray-900 mb-2">
+                Skin Cancer
+              </h2>
+              <p class="text-gray-600 mb-6">
+                Analyze skin lesions and moles for potential cancer
+              </p>
+              
+              <form action="/classify" method="POST" enctype="multipart/form-data">
+                <div class="space-y-4">
+                  <div class="relative">
+                    <input
+                      type="file"
+                      name="file"
+                      accept=".png,.jpg,.jpeg"
+                      required
+                      class="hidden"
+                      id="file-skin_cancer"
+                      onchange="previewImage(event, 'preview-skin_cancer')"
+                    />
+                    <input type="hidden" name="model" value="skin_cancer" />
+                    <label
+                      for="file-skin_cancer"
+                      class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+                    >
+                      <i data-lucide="upload" class="w-5 h-5 mr-2 text-gray-500"></i>
+                      <span class="text-gray-600">Choose file</span>
+                    </label>
+                  </div>
+                  <img id="preview-skin_cancer" class="hidden w-full mt-4 rounded-lg" />
+                  <button
+                    type="submit"
+                    class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200"
+                  >
+                    Analyze
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Brain Tumor Card -->
+          <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+            <div class="p-8">
+              <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
+                <i data-lucide="brain" class="w-6 h-6 text-indigo-600"></i>
+              </div>
+              <h2 class="text-2xl font-semibold text-gray-900 mb-2">
+                Brain Tumor
+              </h2>
+              <p class="text-gray-600 mb-6">
+                Detect brain tumors from MRI scans
+              </p>
+              
+              <form action="/classify" method="POST" enctype="multipart/form-data">
+                <div class="space-y-4">
+                  <div class="relative">
+                    <input
+                      type="file"
+                      name="file"
+                      accept=".png,.jpg,.jpeg"
+                      required
+                      class="hidden"
+                      id="file-brain_tumor"
+                      onchange="previewImage(event, 'preview-brain_tumor')"
+                    />
+                    <input type="hidden" name="model" value="brain_tumor" />
+                    <label
+                      for="file-brain_tumor"
+                      class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+                    >
+                      <i data-lucide="upload" class="w-5 h-5 mr-2 text-gray-500"></i>
+                      <span class="text-gray-600">Choose file</span>
+                    </label>
+                  </div>
+                  <img id="preview-brain_tumor" class="hidden w-full mt-4 rounded-lg" />
+                  <button
+                    type="submit"
+                    class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200"
+                  >
+                    Analyze
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Whole Body CT Image Segmentation Card -->
+          <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+            <div class="p-8">
+              <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
+                <i data-lucide="scan" class="w-6 h-6 text-indigo-600"></i>
+              </div>
+              <h2 class="text-2xl font-semibold text-gray-900 mb-2">
+                Whole Body CT Image Segmentation
+              </h2>
+              <p class="text-gray-600 mb-6">
+                Upload CT images for whole body segmentation
+              </p>
+              
+              <form action="/classify" method="POST" enctype="multipart/form-data">
+                <div class="space-y-4">
+                  <div class="relative">
+                    <input
+                      type="file"
+                      name="file"
+                      accept=".png,.jpg,.jpeg"
+                      required
+                      class="hidden"
+                      id="file-whole_body_ct"
+                      onchange="previewImage(event, 'preview-whole_body_ct')"
+                    />
+                    <input type="hidden" name="model" value="whole_body_ct" />
+                    <label
+                      for="file-whole_body_ct"
+                      class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+                    >
+                      <i data-lucide="upload" class="w-5 h-5 mr-2 text-gray-500"></i>
+                      <span class="text-gray-600">Choose file</span>
+                    </label>
+                  </div>
+                  <img id="preview-whole_body_ct" class="hidden w-full mt-4 rounded-lg" />
+                  <button
+                    type="submit"
+                    class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200"
+                  >
+                    Analyze
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</body>
+
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+
+      // Function to preview image
+      function previewImage(event, previewId) {
+        const input = event.target;
+        const preview = document.getElementById(previewId);
+        const reader = new FileReader();
+
+        reader.onload = function() {
+          preview.src = reader.result;
+          preview.classList.remove('hidden');
+        };
+
+        if (input.files && input.files[0]) {
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+    </script>
+  </body>
 </html>

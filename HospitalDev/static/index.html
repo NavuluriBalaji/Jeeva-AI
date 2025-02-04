@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management System</title>
+    <link href="https://unpkg.com/lucide-icons" rel="stylesheet">
+</head>
+<body style="margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; min-height: 100vh; background: linear-gradient(to bottom right, #f9fafb, #f3f4f6);">
+    <!-- Header -->
+    <header style="background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+        <nav style="max-width: 1280px; margin: 0 auto; padding: 0 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; height: 4rem;">
+                <div style="display: flex; align-items: center;">
+                    <i data-lucide="building-2" style="width: 2rem; height: 2rem; color: #2563eb;"></i>
+                    <h1 style="margin: 0 0 0 0.5rem; font-size: 1.25rem; color: #111827;">Hospital Management System</h1>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="#" style="color: #374151; text-decoration: none; font-weight: 500;">Home</a>
+                    <a href="about_us.html" style="color: #374151; text-decoration: none; font-weight: 500;">Creators</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main style="max-width: 1280px; margin: 0 auto; padding: 2rem 1rem;">
+        <div style="margin-bottom: 2rem;">
+            <h2 style="font-size: 1.875rem; color: #111827; display: flex; align-items: center; margin: 0;">
+                <i data-lucide="building-2" style="width: 2rem; height: 2rem; color: #2563eb; margin-right: 0.5rem;"></i>
+                Dashboard
+            </h2>
+            <p style="margin: 0.25rem 0 0 0; color: #4b5563;">Welcome to the Hospital Management System</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+            <!-- Patients Card -->
+            <a href="patient.html" style="text-decoration: none; transform: scale(1); transition: transform 0.2s;">
+                <div style="background: #059669; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; align-items: center; padding: 1.5rem;">
+                        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
+                            <i data-lucide="wheelchair" style="width: 2rem; height: 2rem; color: white;"></i>
+                        </div>
+                        <div style="margin-left: 1rem;">
+                            <h3 style="margin: 0; font-size: 1.25rem; color: white;">150</h3>
+                            <p style="margin: 0; color: rgba(255,255,255,0.9);">Patients</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Doctors Card -->
+            <a href="doctor.html" style="text-decoration: none; transform: scale(1); transition: transform 0.2s;">
+                <div style="background: #dc2626; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; align-items: center; padding: 1.5rem;">
+                        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
+                            <i data-lucide="user" style="width: 2rem; height: 2rem; color: white;"></i>
+                        </div>
+                        <div style="margin-left: 1rem;">
+                            <h3 style="margin: 0; font-size: 1.25rem; color: white;">45</h3>
+                            <p style="margin: 0; color: rgba(255,255,255,0.9);">Doctors</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Appointments Card -->
+            <a href="appointment.html" style="text-decoration: none; transform: scale(1); transition: transform 0.2s;">
+                <div style="background: #7c3aed; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; align-items: center; padding: 1.5rem;">
+                        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
+                            <i data-lucide="calendar" style="width: 2rem; height: 2rem; color: white;"></i>
+                        </div>
+                        <div style="margin-left: 1rem;">
+                            <h3 style="margin: 0; font-size: 1.25rem; color: white;">89</h3>
+                            <p style="margin: 0; color: rgba(255,255,255,0.9);">Appointments</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Medications Card -->
+            <a href="medication.html" style="text-decoration: none; transform: scale(1); transition: transform 0.2s;">
+                <div style="background: #2563eb; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; align-items: center; padding: 1.5rem;">
+                        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
+                            <i data-lucide="pill" style="width: 2rem; height: 2rem; color: white;"></i>
+                        </div>
+                        <div style="margin-left: 1rem;">
+                            <h3 style="margin: 0; font-size: 1.25rem; color: white;">234</h3>
+                            <p style="margin: 0; color: rgba(255,255,255,0.9);">Medications</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Nurses Card -->
+            <a href="nurse.html" style="text-decoration: none; transform: scale(1); transition: transform 0.2s;">
+                <div style="background: #4b5563; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; align-items: center; padding: 1.5rem;">
+                        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
+                            <i data-lucide="user" style="width: 2rem; height: 2rem; color: white;"></i>
+                        </div>
+                        <div style="margin-left: 1rem;">
+                            <h3 style="margin: 0; font-size: 1.25rem; color: white;">67</h3>
+                            <p style="margin: 0; color: rgba(255,255,255,0.9);">Nurses</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Departments Card -->
+            <a href="department.html" style="text-decoration: none; transform: scale(1); transition: transform 0.2s;">
+                <div style="background: #d97706; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; align-items: center; padding: 1.5rem;">
+                        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
+                            <i data-lucide="building" style="width: 2rem; height: 2rem; color: white;"></i>
+                        </div>
+                        <div style="margin-left: 1rem;">
+                            <h3 style="margin: 0; font-size: 1.25rem; color: white;">12</h3>
+                            <p style="margin: 0; color: rgba(255,255,255,0.9);">Departments</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Procedures Card -->
+            <a href="procedure.html" style="text-decoration: none; transform: scale(1); transition: transform 0.2s;">
+                <div style="background: #4f46e5; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; align-items: center; padding: 1.5rem;">
+                        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
+                            <i data-lucide="stethoscope" style="width: 2rem; height: 2rem; color: white;"></i>
+                        </div>
+                        <div style="margin-left: 1rem;">
+                            <h3 style="margin: 0; font-size: 1.25rem; color: white;">178</h3>
+                            <p style="margin: 0; color: rgba(255,255,255,0.9);">Procedures</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Rooms Card -->
+            <a href="room.html" style="text-decoration: none; transform: scale(1); transition: transform 0.2s;">
+                <div style="background: #15803d; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; align-items: center; padding: 1.5rem;">
+                        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
+                            <i data-lucide="building-2" style="width: 2rem; height: 2rem; color: white;"></i>
+                        </div>
+                        <div style="margin-left: 1rem;">
+                            <h3 style="margin: 0; font-size: 1.25rem; color: white;">56</h3>
+                            <p style="margin: 0; color: rgba(255,255,255,0.9);">Rooms</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Prescribes Card -->
+            <a href="prescribes.html" style="text-decoration: none; transform: scale(1); transition: transform 0.2s;">
+                <div style="background: #db2777; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; align-items: center; padding: 1.5rem;">
+                        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
+                            <i data-lucide="clipboard-list" style="width: 2rem; height: 2rem; color: white;"></i>
+                        </div>
+                        <div style="margin-left: 1rem;">
+                            <h3 style="margin: 0; font-size: 1.25rem; color: white;">423</h3>
+                            <p style="margin: 0; color: rgba(255,255,255,0.9);">Prescribes</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Undergoes Card -->
+            <a href="undergoes.html" style="text-decoration: none; transform: scale(1); transition: transform 0.2s;">
+                <div style="background: #0891b2; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; align-items: center; padding: 1.5rem;">
+                        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
+                            <i data-lucide="syringe" style="width: 2rem; height: 2rem; color: white;"></i>
+                        </div>
+                        <div style="margin-left: 1rem;">
+                            <h3 style="margin: 0; font-size: 1.25rem; color: white;">145</h3>
+                            <p style="margin: 0; color: rgba(255,255,255,0.9);">Undergoes</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer style="background: white; border-top: 1px solid #e5e7eb; margin-top: auto;">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 1rem; text-align: center; color: #4b5563;">
+            © 2024 - Hospital Management System
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

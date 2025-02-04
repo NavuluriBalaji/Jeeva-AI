@@ -61,6 +61,12 @@
             margin-top: 20px;
             text-align: center;
         }
+        #success-message {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+            color: green;
+        }
     </style>
 </head>
 <body>
@@ -69,7 +75,7 @@
     </header>
     <div class="main-container">
         <h2>Book an Appointment</h2>
-        <form id="appointmentForm">
+        <form id="appointmentForm" action="{{ url_for('book_appointment') }}" method="POST">
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
                 <input type="text" class="form-control" id="name" name="name" required>
@@ -109,9 +115,8 @@
             </div>
             <button type="submit" class="btn btn-primary">Book Appointment</button>
         </form>
-        <div id="pdf-link">
-            <h3>Appointment PDF</h3>
-            <a id="download-link" href="#" download="appointment.pdf" class="btn btn-success mt-3">Download Appointment PDF</a>
+        <div id="success-message">
+            <h3>Appointment booked successfully!</h3>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
@@ -125,11 +130,15 @@
             })
             .then(response => response.blob())
             .then(blob => {
-                const url = URL.createObjectURL(blob);
-                const downloadLink = document.getElementById('download-link');
-                downloadLink.href = url;
-                downloadLink.download = 'appointment.pdf';
-                document.getElementById('pdf-link').style.display = 'block';
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'appointment.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.getElementById('success-message').style.display = 'block';
             })
             .catch(error => console.error('Error:', error));
         });

@@ -1,5 +1,5 @@
 from os import path
-from flask import Flask, render_template, request, jsonify, redirect, flash, url_for, send_file
+from flask import Flask, render_template, request, jsonify, redirect, flash, url_for, send_file, make_response
 import firebase_admin
 from transformers import pipeline
 from firebase_admin import credentials, auth, exceptions
@@ -25,6 +25,8 @@ pipelines = {
     "brain_tumor": pipeline("image-classification", model="Devarshi/Brain_Tumor_Classification"),
     "breast_cancer": pipeline("image-classification", model="amanvvip2/finetuned-breast_cancer_images"),
     "skin_cancer": pipeline("image-classification", model="Anwarkh1/Skin_Cancer-Image_Classification")
+    # Remove the unrecognized model
+    # "whole_body_CT": pipeline("image-segmentation", model="project-lighter/whole_body_segmentation")
 }
 
 # # Initialize Firebase
@@ -244,21 +246,42 @@ def book_appointment():
     # Generate PDF
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_font("Arial", size=12)
-    pdf.cell(200, 10, txt="HealthCare Appointment Booking", ln=True, align='C')
-    pdf.ln(10)
-    pdf.cell(200, 10, txt=f"Name: {name}", ln=True)
-    pdf.cell(200, 10, txt=f"Age: {age}", ln=True)
-    pdf.cell(200, 10, txt=f"Phone: {phone}", ln=True)
-    pdf.cell(200, 10, txt=f"Gender: {gender}", ln=True)
-    pdf.cell(200, 10, txt=f"Appointment Date: {date}", ln=True)
-    pdf.cell(200, 10, txt=f"Disease: {disease}", ln=True)
-    pdf.cell(200, 10, txt=f"Doctor: {doctor}", ln=True)
+    pdf.set_font("Arial", 'B', 16)
+    pdf.cell(200, 10, txt="HealthCare Appointment Confirmation", ln=True, align='C')
+    pdf.ln(10)  # Add a line break
 
-    pdf_output = f"{name}_appointment.pdf"
+    pdf.set_font("Arial", size=12)
+    pdf.cell(100, 10, txt=f"Name: {name}", ln=False)
+    pdf.cell(100, 10, txt=f"Age: {age}", ln=True)
+    pdf.cell(100, 10, txt=f"Phone: {phone}", ln=False)
+    pdf.cell(100, 10, txt=f"Gender: {gender}", ln=True)
+    pdf.cell(100, 10, txt=f"Appointment Date: {date}", ln=False)
+    pdf.cell(100, 10, txt=f"Disease: {disease}", ln=True)
+    pdf.cell(100, 10, txt=f"Doctor: {doctor}", ln=True)
+    pdf.ln(10)  # Add a line break
+
+    pdf.cell(200, 10, txt="Money Received: [ ]", ln=True)
+    pdf.ln(10)  # Add a line break
+
+    pdf.cell(200, 10, txt="Signature: ___________________________", ln=True)
+    pdf.ln(20)  # Add a line break
+
+    pdf.cell(200, 10, txt="Doctor's Prescription:", ln=True)
+    pdf.ln(10)  # Add a line break
+    pdf.multi_cell(0, 10, txt=" " * 200)  # Add space for the doctor's prescription
+
+    pdf_output = f"./uploads/{name}_appointment.pdf"
     pdf.output(pdf_output)
 
-    return send_file(pdf_output, as_attachment=True, mimetype='application/pdf')
+    # Read the PDF file and send it as a response
+    with open(pdf_output, 'rb') as f:
+        pdf_data = f.read()
+
+    response = make_response(pdf_data)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = f'attachment; filename={name}_appointment.pdf'
+
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

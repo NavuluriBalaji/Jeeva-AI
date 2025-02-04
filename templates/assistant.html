@@ -1,159 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
-  <title>Voice Chat App</title>
+  <title>Virtual Assistant</title>
   <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.344.0/lucide.min.css" rel="stylesheet">
   <style>
-    :root {
-      --primary-color: #1d3557;
-      --secondary-color: #457b9d;
-      --accent-color: #e63946;
-      --background-color: #f1faee;
-      --card-color: #ffffff;
-      --button-gradient: linear-gradient(45deg, #457b9d, #1d3557);
-      --hover-gradient: linear-gradient(45deg, #1d3557, #457b9d);
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      --text-color: #333;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-      font-family: "Roboto", sans-serif;
-      background-color: var(--background-color);
-      margin: 0;
-      padding: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(to bottom, #fff7ed, #ffedd5);
       display: flex;
       flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
     }
 
-    h1 {
-      color: var(--primary-color);
-      text-align: center;
-      margin: 20px 0;
-      font-weight: 700;
-      font-size: 2rem;
-    }
-
-    #container {
-      width: 90%;
-      max-width: 800px;
-      background-color: var(--card-color);
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: var(--shadow);
-      margin-bottom: 20px;
-    }
-
-    .button-container {
-      text-align: center;
-      margin: 20px 0;
-    }
-
-    button {
-      padding: 12px 20px;
-      font-size: 16px;
-      font-weight: 500;
-      border: none;
-      border-radius: 30px;
-      background: var(--button-gradient);
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: var(--shadow);
-    }
-
-    button:hover {
-      background: var(--hover-gradient);
-      transform: translateY(-2px);
-    }
-
-    .chatBox {
-      list-style-type: none;
-      margin: 0;
-      padding: 10px;
-      max-height: 300px;
-      overflow-y: auto;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      box-shadow: var(--shadow);
-      background-color: var(--card-color);
-    }
-
-    .chatBox li {
-      margin-bottom: 10px;
-      padding: 12px 16px;
-      border-radius: 20px;
-      max-width: 70%;
-      box-shadow: var(--shadow);
-      word-wrap: break-word;
-      font-size: 15px;
-      line-height: 1.5;
-    }
-
-    .chatBox li.ai {
-      background-color: var(--secondary-color);
-      color: white;
-      margin-left: 0;
-    }
-
-    .chatBox li.user {
-      background-color: var(--primary-color);
-      color: white;
-      margin-left: auto;
-    }
-
-    #video-container {
+    .container {
+      max-width: 64rem;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      flex: 1;
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
+    }
+
+    .chat-container {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .header {
+      background-color: #f97316;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .header h1 {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
       justify-content: center;
-      margin-top: 20px;
+      gap: 0.5rem;
     }
 
-    .video-item {
-      margin: 10px;
-      max-width: 400px;
+    .chat-box {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
     }
 
-    #text-to-speech {
-      width: 90%;
-      max-width: 800px;
-      background-color: var(--card-color);
-      border-radius: 12px;
-      box-shadow: var(--shadow);
-      padding: 20px;
-      margin-bottom: 20px;
+    .message {
+      display: flex;
+      margin-bottom: 1rem;
     }
 
-    textarea {
-      width: 100%;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 10px;
-      font-size: 16px;
-      resize: none;
-      outline: none;
-      transition: box-shadow 0.3s ease;
+    .message.user {
+      justify-content: flex-end;
     }
 
-    textarea:focus {
-      box-shadow: var(--shadow);
-      border-color: var(--primary-color);
+    .message-content {
+      max-width: 80%;
+      padding: 0.75rem 1rem;
+      border-radius: 1rem;
     }
 
-    audio {
-      width: 100%;
-      margin-top: 10px;
+    .message.user .message-content {
+      background-color: #f97316;
+      color: white;
     }
 
-    .pulse-animation {
+    .message:not(.user) .message-content {
+      background-color: #f3f4f6;
+      color: #1f2937;
+    }
+
+    .controls {
+      border-top: 1px solid #e5e7eb;
+      padding: 1.5rem;
+      background: white;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .record-button {
+      padding: 1rem;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .record-button.start {
+      background-color: #f97316;
+      color: white;
+    }
+
+    .record-button.start:hover {
+      background-color: #ea580c;
+    }
+
+    .record-button.stop {
+      background-color: #e5e7eb;
+      color: #4b5563;
+    }
+
+    .record-button.stop:hover {
+      background-color: #d1d5db;
+    }
+
+    .pulse {
       animation: pulse 1.5s infinite;
+      background-color: #ef4444;
     }
 
     @keyframes pulse {
@@ -161,61 +140,298 @@
         transform: scale(1);
         opacity: 1;
       }
-
       50% {
         transform: scale(1.05);
         opacity: 0.8;
       }
-
       100% {
         transform: scale(1);
         opacity: 1;
       }
     }
 
-    ::-webkit-scrollbar {
-      width: 8px;
+    .text-to-speech {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
 
-    ::-webkit-scrollbar-thumb {
-      background: var(--primary-color);
-      border-radius: 10px;
+    textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      resize: none;
+      font-family: inherit;
+      font-size: 1rem;
+      line-height: 1.5;
+      transition: all 0.2s;
     }
 
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--secondary-color);
+    textarea:focus {
+      outline: none;
+      border-color: #f97316;
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+    }
+
+    .convert-button {
+      background-color: #f97316;
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: background-color 0.2s;
+    }
+
+    .convert-button:hover {
+      background-color: #ea580c;
+    }
+
+    .symptom-button {
+      background-color: #f97316;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      margin: 0.25rem;
+      font-size: 0.875rem;
+      transition: background-color 0.2s;
+    }
+
+    .symptom-button:hover {
+      background-color: #ea580c;
     }
   </style>
 </head>
-
 <body>
-  <h1>Virtual Assistant</h1>
+  <div class="container">
+    <div class="chat-container">
+      <div class="header">
+        <h1>
+          <svg xmlns="http://www.w3.org/2000/svg" width="500" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Virtual Assistant
+        </h1>
+      </div>
 
-  <div id="container">
-    <div class="button-container">
-      <button id="startButton">Start</button>
-      <button id="stopButton">Stop</button>
+      <div class="chat-box">
+        <div class="message user">
+          <div class="message-content">Hello</div>
+        </div>
+        <div class="message">
+          <div class="message-content">Hello there! How can I help you?</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="button-group">
+          <button id="startButton" class="record-button start">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mic"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>
+          </button>
+          <button id="stopButton" class="record-button stop">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mic-off"><path d="m1 1 22 22"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V5a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"/><path d="M12 19v3"/></svg>
+          </button>
+        </div>
+
+        <div class="text-to-speech">
+          <textarea id="text" rows="3" placeholder="Enter your text for speech conversion..."></textarea>
+          <button onclick="convertTextToSpeech()" class="convert-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-volume-2"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+            Convert to Speech
+          </button>
+        </div>
+      </div>
     </div>
-
-    <ul class="chatBox">
-      <li class="user">Hello</li>
-      <li class="ai">Hello there! How can I assist you?</li>
-    </ul>
-
-    <div id="video-container"></div>
-  </div>
-
-  <div id="text-to-speech">
-    <textarea id="text" rows="4" placeholder="Enter your text here"></textarea>
-    <div class="button-container">
-      <button onclick="convertTextToSpeech()">Convert to Speech</button>
-    </div>
-    <audio id="audio" controls></audio>
   </div>
 
   <script>
-    // All your existing functionality remains here
+    var subscriptionKey = '53a3231e62ad4d8388135e3308e4b632';
+    var tokenEndpoint = 'https://eastus.api.cognitive.microsoft.com/sts/v1.0/issuetoken';
+    var speechRecognitionEndpoint = 'https://eastus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1';
+
+    var authorizationToken = '';
+    
+    $.ajax({
+      type: 'POST',
+      url: tokenEndpoint,
+      headers: {
+        'Ocp-Apim-Subscription-Key': subscriptionKey
+      },
+      success: function (data) {
+        authorizationToken = data;
+      },
+      error: function (err) {
+        console.error('Error getting authorization token:', err);
+      }
+    });
+
+    var recognizer;
+    let selected_symptoms = [];
+
+    function startRecognition() {
+      const chatBox = document.querySelector('.chat-box');
+
+      var headers = {
+        'Authorization': 'Bearer ' + authorizationToken,
+        'Content-Type': 'audio/wav; codec=audio/pcm; samplerate=16000'
+      };
+
+      recognizer = new webkitSpeechRecognition();
+      recognizer.continuous = true;
+      recognizer.interimResults = true;
+      recognizer.lang = 'en-IN';
+      recognizer.start();
+
+      recognizer.onresult = function (event) {
+        selected_symptoms = [];
+        var result = event.results[event.resultIndex];
+        if (result.isFinal) {
+          var transcribedText = result[0].transcript;
+
+          // Add user message
+          const userMessage = document.createElement('div');
+          userMessage.className = 'message user';
+          userMessage.innerHTML = `<div class="message-content">${transcribedText}</div>`;
+          chatBox.appendChild(userMessage);
+
+          // Call Google Gemini API
+          var geminiPrompt = `
+            extract disease symptoms from this text: ${transcribedText}
+            change it to any one of the following:
+            ["skin_rash","nodal_skin_eruptions","continuous_sneezing","shivering","chills","joint_pain","stomach_pain","acidity","ulcers_on_tongue","muscle_wasting","vomiting","burning_micturition","spotting_urination","fatigue","weight_gain","anxiety","cold_hands_and_feets","mood_swings","weight_loss","restlessness","lethargy","patches_in_throat","irregular_sugar_level","cough","high_fever","sunken_eyes","breathlessness","sweating","dehydration","indigestion","headache","yellowish_skin","dark_urine","nausea","loss_of_appetite","pain_behind_the_eyes","back_pain","constipation","abdominal_pain","diarrhoea","mild_fever","yellow_urine","yellowing_of_eyes","acute_liver_failure","fluid_overload","swelling_of_stomach","swelled_lymph_nodes","malaise","blurred_and_distorted_vision","phlegm","throat_irritation","redness_of_eyes","sinus_pressure","runny_nose","congestion","chest_pain","weakness_in_limbs","fast_heart_rate","pain_during_bowel_movements","pain_in_anal_region","bloody_stool","irritation_in_anus","neck_pain","dizziness","cramps","tiredness","bruising","obesity","swollen_legs","swollen_blood_vessels","puffy_face_and_eyes","enlarged_thyroid","brittle_nails","swollen_extremeties","excessive_hunger","extra_marital_contacts","drying_and_tingling_lips","slurred_speech","knee_pain","hip_joint_pain","muscle_weakness","stiff_neck","swelling_joints","movement_stiffness","spinning_movements","loss_of_taste","loss_of_balance","unsteadiness","weakness_of_one_body_side","loss_of_smell","bladder_discomfort","foul_smell_of urine","continuous_feel_of_urine","passage_of_gases","internal_itching","toxic_look_(typhos)","depression","irritability","muscle_pain","altered_sensorium","red_spots_over_body","belly_pain","abnormal_menstruation","dischromic_patches","watering_from_eyes","increased_appetite","polyuria","family_history","mucoid_sputum","rusty_sputum","lack_of_concentration","visual_disturbances","receiving_blood_transfusion","receiving_unsterile_injections","coma","stomach_bleeding","distention_of_abdomen","history_of_alcohol_consumption","fluid_overload","blood_in_sputum","prominent_veins_on_calf","palpitations","painful_walking","pus_filled_pimples","blackheads","scurring","skin_peeling","silver_like_dusting","small_dents_in_nails","inflammatory_nails","blister","red_sore_around_nose","yellow_crust_ooze","itching"]
+            only respond with the symptom, no other text should be in the response
+          `;
+          let geminiKey = 'AIzaSyBYTU4xUx5hwtcTPMqnpvQmv7INQYEuKcY';
+          
+          axios.post(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiKey}`, 
+          {
+            contents: [
+              {
+                parts: [
+                  {
+                    text: geminiPrompt
+                  }
+                ]
+              }
+            ]
+          }, {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(response => {
+            var responseText = response.data.candidates[0].content.parts[0].text;
+            
+            // Add AI response
+            const aiMessage = document.createElement('div');
+            aiMessage.className = 'message';
+            aiMessage.innerHTML = `<div class="message-content">It seems like you are feeling ${responseText}</div>`;
+            chatBox.appendChild(aiMessage);
+
+            if (["skin_rash","nodal_skin_eruptions","continuous_sneezing","shivering","chills","joint_pain","stomach_pain","acidity","ulcers_on_tongue","muscle_wasting","vomiting","burning_micturition","spotting_urination","fatigue","weight_gain","anxiety","cold_hands_and_feets","mood_swings","weight_loss","restlessness","lethargy","patches_in_throat","irregular_sugar_level","cough","high_fever","sunken_eyes","breathlessness","sweating","dehydration","indigestion","headache","yellowish_skin","dark_urine","nausea","loss_of_appetite","pain_behind_the_eyes","back_pain","constipation","abdominal_pain","diarrhoea","mild_fever","yellow_urine","yellowing_of_eyes","acute_liver_failure","fluid_overload","swelling_of_stomach","swelled_lymph_nodes","malaise","blurred_and_distorted_vision","phlegm","throat_irritation","redness_of_eyes","sinus_pressure","runny_nose","congestion","chest_pain","weakness_in_limbs","fast_heart_rate","pain_during_bowel_movements","pain_in_anal_region","bloody_stool","irritation_in_anus","neck_pain","dizziness","cramps","tiredness","bruising","obesity","swollen_legs","swollen_blood_vessels","puffy_face_and_eyes","enlarged_thyroid","brittle_nails","swollen_extremeties","excessive_hunger","extra_marital_contacts","drying_and_tingling_lips","slurred_speech","knee_pain","hip_joint_pain","muscle_weakness","stiff_neck","swelling_joints","movement_stiffness","spinning_movements","loss_of_taste","loss_of_balance","unsteadiness","weakness_of_one_body_side","loss_of_smell","bladder_discomfort","foul_smell_of urine","continuous_feel_of_urine","passage_of_gases","internal_itching","toxic_look_(typhos)","depression","irritability","muscle_pain","altered_sensorium","red_spots_over_body","belly_pain","abnormal_menstruation","dischromic_patches","watering_from_eyes","increased_appetite","polyuria","family_history","mucoid_sputum","rusty_sputum","lack_of_concentration","visual_disturbances","receiving_blood_transfusion","receiving_unsterile_injections","coma","stomach_bleeding","distention_of_abdomen","history_of_alcohol_consumption","fluid_overload","blood_in_sputum","prominent_veins_on_calf","palpitations","painful_walking","pus_filled_pimples","blackheads","scurring","skin_peeling","silver_like_dusting","small_dents_in_nails","inflammatory_nails","blister","red_sore_around_nose","yellow_crust_ooze","itching"].includes(responseText)) {
+              axios.get(`https://niyabackend.pythonanywhere.com/get_related_syms?s=${responseText}`)
+                .then((res) => {
+                  const aiPrompt = document.createElement('div');
+                  aiPrompt.className = 'message';
+                  aiPrompt.innerHTML = `<div class="message-content">Are you feeling any of the following symptoms?</div>`;
+                  chatBox.appendChild(aiPrompt);
+
+                  const buttonContainer = document.createElement('div');
+                  buttonContainer.style.display = 'flex';
+                  buttonContainer.style.flexWrap = 'wrap';
+                  buttonContainer.style.gap = '0.5rem';
+                  buttonContainer.style.margin = '1rem 0';
+
+                  res.data.forEach(symptom => {
+                    const button = document.createElement('button');
+                    button.className = 'symptom-button';
+                    button.textContent = symptom;
+                    button.onclick = () => {
+                      alert(`Selected ${symptom}`);
+                      selected_symptoms.push(symptom);
+                    };
+                    buttonContainer.appendChild(button);
+                  });
+
+                  const submitButton = document.createElement('button');
+                  submitButton.className = 'symptom-button';
+                  submitButton.textContent = 'Submit';
+                  submitButton.onclick = () => {
+                    window.location.href = `/recommend?symptoms=${selected_symptoms.join(',')}`;
+                  };
+                  buttonContainer.appendChild(submitButton);
+
+                  chatBox.appendChild(buttonContainer);
+                })
+                .catch(err => {
+                  console.error(err);
+                });
+            }
+          })
+          .catch(error => {
+            console.error('Error calling Gemini API:', error);
+          });
+        }
+      };
+
+      recognizer.onerror = function (event) {
+        console.error('Recognition error:', event.error);
+      };
+
+      $('#startButton').addClass('pulse');
+    }
+
+    function stopRecognition() {
+      if (recognizer) {
+        recognizer.stop();
+      }
+      $('#startButton').removeClass('pulse');
+    }
+
+    $('#startButton').on('click', startRecognition);
+    $('#stopButton').on('click', stopRecognition);
+
+    function convertTextToSpeech() {
+      var text = document.getElementById('text').value;
+      var subscriptionKey = '53a3231e62ad4d8388135e3308e4b632';
+
+      var apiUrl = 'https://eastus.tts.speech.microsoft.com/cognitiveservices/v1';
+      var request = new XMLHttpRequest();
+      request.open('POST', apiUrl, true);
+      request.setRequestHeader('Ocp-Apim-Subscription-Key', subscriptionKey);
+      request.setRequestHeader('Content-Type', 'application/ssml+xml');
+      request.setRequestHeader('X-Microsoft-OutputFormat', 'riff-24khz-16bit-mono-pcm');
+      request.setRequestHeader('User-Agent', 'Mozilla/5.0');
+      request.responseType = 'arraybuffer';
+
+      request.onload = function() {
+        if (request.status === 200) {
+          var audioData = request.response;
+          var audioContext = new AudioContext();
+          audioContext.decodeAudioData(audioData, function(buffer) {
+            var audioSource = audioContext.createBufferSource();
+            audioSource.buffer = buffer;
+            audioSource.connect(audioContext.destination);
+            audioSource.start(0);
+          }, function(e) {
+            console.error('Error decoding audio data:', e);
+          });
+        } else {
+          console.error('Error:', request.statusText);
+        }
+      };
+
+      var body = '<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="en-US">' +
+        '<voice name="en-US-AriaNeural">' + text + '</voice></speak>';
+
+      request.send(body);
+    }
   </script>
 </body>
-
 </html>
