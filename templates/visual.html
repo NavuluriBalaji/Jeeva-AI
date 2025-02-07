@@ -24,7 +24,7 @@
           <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
             <div class="p-8">
               <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
-                <i data-lucide="heart" class="w-6 h-6 text-indigo-600"></i>
+                <i data-lucide="stethoscope" class="w-6 h-6 text-indigo-600"></i>
               </div>
               <h2 class="text-2xl font-semibold text-gray-900 mb-2">
                 Breast Cancer
@@ -70,7 +70,7 @@
           <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
             <div class="p-8">
               <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
-                <i data-lucide="pin" class="w-6 h-6 text-indigo-600"></i>
+                <i data-lucide="scan-face" class="w-6 h-6 text-indigo-600"></i>
               </div>
               <h2 class="text-2xl font-semibold text-gray-900 mb-2">
                 Skin Cancer
@@ -162,7 +162,7 @@
           <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
             <div class="p-8">
               <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
-                <i data-lucide="scan" class="w-6 h-6 text-indigo-600"></i>
+                <i data-lucide="scan-line" class="w-6 h-6 text-indigo-600"></i>
               </div>
               <h2 class="text-2xl font-semibold text-gray-900 mb-2">
                 Whole Body CT Image Segmentation
@@ -203,6 +203,107 @@
               </form>
             </div>
           </div>
+
+          <!-- Lung and Colon Cancer Card -->
+          <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+            <div class="p-8">
+              <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
+                <i data-lucide="lungs" class="w-6 h-6 text-indigo-600"></i>
+              </div>
+              <h2 class="text-2xl font-semibold text-gray-900 mb-2">
+                Lung and Colon Cancer
+              </h2>
+              <p class="text-gray-600 mb-6">
+                Upload images for lung and colon cancer detection
+              </p>
+              
+              <form action="/classify" method="POST" enctype="multipart/form-data">
+                <div class="space-y-4">
+                  <div class="relative">
+                    <input
+                      type="file"
+                      name="file"
+                      accept=".png,.jpg,.jpeg"
+                      required
+                      class="hidden"
+                      id="file-lung_colon_cancer"
+                      onchange="previewImage(event, 'preview-lung_colon_cancer')"
+                    />
+                    <input type="hidden" name="model" value="lung_colon_cancer" />
+                    <label
+                      for="file-lung_colon_cancer"
+                      class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+                    >
+                      <i data-lucide="upload" class="w-5 h-5 mr-2 text-gray-500"></i>
+                      <span class="text-gray-600">Choose file</span>
+                    </label>
+                  </div>
+                  <img id="preview-lung_colon_cancer" class="hidden w-full mt-4 rounded-lg" />
+                  <button
+                    type="submit"
+                    class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200"
+                  >
+                    Analyze
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Kidney Disease Card -->
+          <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+            <div class="p-8">
+              <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
+                <i data-lucide="activity" class="w-6 h-6 text-indigo-600"></i>
+              </div>
+              <h2 class="text-2xl font-semibold text-gray-900 mb-2">
+                Kidney Disease
+              </h2>
+              <p class="text-gray-600 mb-6">
+                Predict kidney disease based on user input
+              </p>
+              <a href="/kidney" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200 text-center block">
+                Predict
+              </a>
+            </div>
+          </div>
+
+          <!-- Heart Disease Card -->
+          <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+            <div class="p-8">
+              <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
+                <i data-lucide="heart-pulse" class="w-6 h-6 text-indigo-600"></i>
+              </div>
+              <h2 class="text-2xl font-semibold text-gray-900 mb-2">
+                Heart Disease
+              </h2>
+              <p class="text-gray-600 mb-6">
+                Predict heart disease based on user input
+              </p>
+              <a href="/heart" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200 text-center block">
+                Predict
+              </a>
+            </div>
+          </div>
+
+          <!-- Diabetes Card -->
+          <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+            <div class="p-8">
+              <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-6">
+                <i data-lucide="flask-round" class="w-6 h-6 text-indigo-600"></i>
+              </div>
+              <h2 class="text-2xl font-semibold text-gray-900 mb-2">
+                Diabetes
+              </h2>
+              <p class="text-gray-600 mb-6">
+                Predict diabetes based on user input
+              </p>
+              <a href="/diabetes" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200 text-center block">
+                Predict
+              </a>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

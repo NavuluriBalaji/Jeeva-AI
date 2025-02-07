@@ -14,11 +14,34 @@
         .result-card {
             animation: fadeIn 0.5s ease-out forwards;
         }
+        .explanation-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .explanation {
+            width: 45%;
+            margin-left: 20px;
+        }
+        .explanation-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .explanation-content.active {
+            max-height: 1000px;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .loading {
+            animation: pulse 1.5s infinite;
+        }
     </style>
 </head>
 <body>
     <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl mx-auto">
+        <div class="max-w-5xl mx-auto">
             <div class="bg-white rounded-2xl shadow-xl overflow-hidden result-card">
                 <div class="p-8">
                     <div class="flex items-center justify-center mb-6">
@@ -30,29 +53,62 @@
                     <h1 class="text-3xl font-bold text-center text-gray-900 mb-2">Classification Result</h1>
                     <p class="text-center text-gray-600 mb-8">Results for model: <span class="font-semibold">{{ model }}</span></p>
                     
-                    <div class="space-y-4 mb-8">
-                        {% for result in prediction %}
-                        <div class="bg-gray-50 rounded-lg p-4 flex items-center justify-between">
-                            <div class="flex items-center space-x-4">
-                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
-                                    <i data-lucide="tag" class="w-5 h-5 text-indigo-600"></i>
+                    <div class="explanation-container">
+                        <div class="space-y-4 mb-8 w-1/2">
+                            {% for result in prediction %}
+                            <div class="bg-gray-50 rounded-lg p-4 flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                                        <i data-lucide="tag" class="w-5 h-5 text-indigo-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">{{ result['label'] }}</p>
+                                        <p class="text-sm text-gray-500">Confidence Score</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p class="font-medium text-gray-900">{{ result['label'] }}</p>
-                                    <p class="text-sm text-gray-500">Confidence Score</p>
+                                <div class="text-right">
+                                    <span class="text-2xl font-bold text-indigo-600">{{ "%.2f"|format(result['score'] * 100) }}%</span>
                                 </div>
                             </div>
-                            <div class="text-right">
-                                <span class="text-2xl font-bold text-indigo-600">{{ "%.2f"|format(result['score'] * 100) }}%</span>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="explanation w-1/2 pl-6">
+                            <div class="bg-gray-50 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Detailed Explanation</h3>
+                                <button id="get-explanation" class="w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
+                                    <i data-lucide="info" class="w-5 h-5 mr-2"></i>
+                                    Get Explanation
+                                </button>
+                                
+                                <div id="loading" class="hidden mt-4">
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <div class="w-4 h-4 bg-indigo-600 rounded-full loading"></div>
+                                        <div class="w-4 h-4 bg-indigo-500 rounded-full loading" style="animation-delay: 0.2s"></div>
+                                        <div class="w-4 h-4 bg-indigo-400 rounded-full loading" style="animation-delay: 0.4s"></div>
+                                    </div>
+                                </div>
+
+                                <div id="explanation-wrapper" class="explanation-content mt-4">
+                                    <div class="bg-white rounded-lg p-4 shadow-sm">
+                                        <div id="explanation" class="prose text-gray-700 text-sm leading-relaxed"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        {% endfor %}
                     </div>
                     
-                    <div class="flex justify-center">
+                    <div class="flex justify-center mt-8">
                         <a href="/" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
                             <i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i>
                             Back to Home
+                        </a>
+                    </div>
+                    
+                    <div class="flex justify-center mt-4">
+                        <a href="/appointment" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
+                            <i data-lucide="calendar" class="w-5 h-5 mr-2"></i>
+                            Make an Appointment
                         </a>
                     </div>
                 </div>
@@ -60,9 +116,59 @@
         </div>
     </div>
 
+    <footer class="mt-8 text-center text-gray-600 text-sm">
+        AI prediction results can be inaccurate. Please consult your doctor for better medication.
+    </footer>
+
     <script>
         // Initialize Lucide icons
         lucide.createIcons();
+
+        const explanationWrapper = document.getElementById('explanation-wrapper');
+        const loading = document.getElementById('loading');
+        const explanationContent = document.getElementById('explanation');
+        const getExplanationBtn = document.getElementById('get-explanation');
+
+        getExplanationBtn.addEventListener('click', function() {
+            // Show loading animation
+            loading.classList.remove('hidden');
+            getExplanationBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            getExplanationBtn.disabled = true;
+
+            fetch(`/get_explanation?disease=${encodeURIComponent('{{ prediction[0]["label"] }}')}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Hide loading animation
+                    loading.classList.add('hidden');
+                    
+                    // Show explanation with animation
+                    explanationWrapper.classList.add('active');
+                    explanationContent.innerHTML = formatExplanation(data.explanation);
+                    
+                    // Update button
+                    getExplanationBtn.innerHTML = '<i data-lucide="check" class="w-5 h-5 mr-2"></i>Explanation Loaded';
+                    getExplanationBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    getExplanationBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+                    lucide.createIcons();
+                })
+                .catch(error => {
+                    console.error('Error fetching explanation:', error);
+                    loading.classList.add('hidden');
+                    explanationWrapper.classList.add('active');
+                    explanationContent.innerHTML = '<div class="text-red-600">Failed to fetch explanation. Please try again.</div>';
+                    
+                    // Reset button
+                    getExplanationBtn.disabled = false;
+                    getExplanationBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                });
+        });
+
+        function formatExplanation(text) {
+            // Split text into paragraphs and wrap them in styled divs
+            return text.split('\n\n').map(paragraph => 
+                `<p class="mb-3">${paragraph}</p>`
+            ).join('');
+        }
     </script>
 </body>
 </html>

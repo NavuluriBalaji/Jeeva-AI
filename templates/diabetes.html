@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diabetes Prediction</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto">
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden p-8">
+        <h1 class="text-3xl font-bold text-center text-gray-900 mb-8">Diabetes Prediction</h1>
+        <form action="/predict_diabetes" method="POST">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Add input fields here -->
+            <input type="text" name="pregnancies" placeholder="Number of Pregnancies" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="glucose" placeholder="Glucose Level" class="border border-gray-300 rounded-lg p-2">
+            <!-- Add more fields as needed -->
+          </div>
+          <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200 mt-6">
+            Predict
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

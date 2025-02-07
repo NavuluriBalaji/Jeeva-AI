@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heart Disease Prediction</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto">
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden p-8">
+        <h1 class="text-3xl font-bold text-center text-gray-900 mb-8">Heart Disease Prediction</h1>
+        <form action="/predict_heart" method="POST">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <input type="text" name="age" placeholder="Age" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="sex" placeholder="Sex" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="cp" placeholder="Chest Pain Types" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="trestbps" placeholder="Resting Blood Pressure" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="chol" placeholder="Serum Cholesterol in mg/dl" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="fbs" placeholder="Fasting Blood Sugar > 120 mg/dl" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="restecg" placeholder="Resting Electrocardiographic results" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="thalach" placeholder="Maximum Heart Rate achieved" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="exang" placeholder="Exercise Induced Angina" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="oldpeak" placeholder="ST depression induced by exercise" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="slope" placeholder="Slope of the peak exercise ST segment" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="ca" placeholder="Major vessels colored by fluoroscopy" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="thal" placeholder="thal: 0 = normal; 1 = fixed defect; 2 = reversible defect" class="border border-gray-300 rounded-lg p-2">
+          </div>
+          <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200 mt-6">
+            Predict
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

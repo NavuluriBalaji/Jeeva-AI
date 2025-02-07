@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kidney Disease Prediction</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto">
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden p-8">
+        <h1 class="text-3xl font-bold text-center text-gray-900 mb-8">Kidney Disease Prediction</h1>
+        <form action="/predict_kidney" method="POST">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <input type="text" name="age" placeholder="Age" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="blood_pressure" placeholder="Blood Pressure" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="specific_gravity" placeholder="Specific Gravity" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="albumin" placeholder="Albumin" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="sugar" placeholder="Sugar" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="red_blood_cells" placeholder="Red Blood Cell" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="pus_cell" placeholder="Pus Cell" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="pus_cell_clumps" placeholder="Pus Cell Clumps" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="bacteria" placeholder="Bacteria" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="blood_glucose_random" placeholder="Blood Glucose Random" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="blood_urea" placeholder="Blood Urea" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="serum_creatinine" placeholder="Serum Creatinine" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="sodium" placeholder="Sodium" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="potassium" placeholder="Potassium" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="haemoglobin" placeholder="Haemoglobin" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="packed_cell_volume" placeholder="Packed Cell Volume" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="white_blood_cell_count" placeholder="White Blood Cell Count" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="red_blood_cell_count" placeholder="Red Blood Cell Count" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="hypertension" placeholder="Hypertension" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="diabetes_mellitus" placeholder="Diabetes Mellitus" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="coronary_artery_disease" placeholder="Coronary Artery Disease" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="appetite" placeholder="Appetite" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="peda_edema" placeholder="Peda Edema" class="border border-gray-300 rounded-lg p-2">
+            <input type="text" name="aanemia" placeholder="Aanemia" class="border border-gray-300 rounded-lg p-2">
+          </div>
+          <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200 mt-6">
+            Predict
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

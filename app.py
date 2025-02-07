@@ -1,4 +1,5 @@
 from os import path
+# from flask import Flask
 from flask import Flask, render_template, request, jsonify, redirect, flash, url_for, send_file, make_response
 import firebase_admin
 from transformers import pipeline
@@ -13,6 +14,7 @@ from firebase_admin import credentials, auth, exceptions
 import os
 from PIL import Image
 from fpdf import FPDF
+import requests
 
 app = Flask(__name__)
 
@@ -24,7 +26,8 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 pipelines = {
     "brain_tumor": pipeline("image-classification", model="Devarshi/Brain_Tumor_Classification"),
     "breast_cancer": pipeline("image-classification", model="amanvvip2/finetuned-breast_cancer_images"),
-    "skin_cancer": pipeline("image-classification", model="Anwarkh1/Skin_Cancer-Image_Classification")
+    "skin_cancer": pipeline("image-classification", model="Anwarkh1/Skin_Cancer-Image_Classification"),
+    "lung_colon_cancer": pipeline("image-classification", model="DunnBC22/vit-base-patch16-224-in21k_lung_and_colon_cancer")
     # Remove the unrecognized model
     # "whole_body_CT": pipeline("image-segmentation", model="project-lighter/whole_body_segmentation")
 }
@@ -41,6 +44,11 @@ medications = pd.read_csv('flask/datasets/medications.csv')
 diets = pd.read_csv("flask/datasets/diets.csv")
 
 model = pickle.load(open('flask/svc.pkl', 'rb'))
+
+# Load models for kidney, heart, and diabetes predictions
+# diabetes_model = pickle.load(open('flask/diabetes.pkl', 'rb'))
+heart_disease_model = pickle.load(open('flask/heart.pkl', 'rb'))
+kidney_disease_model = pickle.load(open('flask/kidney.pkl', 'rb'))
 
 @app.route('/')
 def index():
@@ -283,5 +291,160 @@ def book_appointment():
 
     return response
 
+@app.route('/kidney')
+def kidney():
+    return render_template('kidney.html')
+
+@app.route('/heart')
+def heart():
+    return render_template('heart.html')
+
+@app.route('/diabetes')
+def diabetes():
+    return render_template('diabetes.html')
+
+@app.route('/predict_kidney', methods=['POST'])
+def predict_kidney():
+    # Extract form data
+    age = request.form.get('age')
+    blood_pressure = request.form.get('blood_pressure')
+    specific_gravity = request.form.get('specific_gravity')
+    albumin = request.form.get('albumin')
+    sugar = request.form.get('sugar')
+    red_blood_cells = request.form.get('red_blood_cells')
+    pus_cell = request.form.get('pus_cell')
+    pus_cell_clumps = request.form.get('pus_cell_clumps')
+    bacteria = request.form.get('bacteria')
+    blood_glucose_random = request.form.get('blood_glucose_random')
+    blood_urea = request.form.get('blood_urea')
+    serum_creatinine = request.form.get('serum_creatinine')
+    sodium = request.form.get('sodium')
+    potassium = request.form.get('potassium')
+    haemoglobin = request.form.get('haemoglobin')
+    packed_cell_volume = request.form.get('packed_cell_volume')
+    white_blood_cell_count = request.form.get('white_blood_cell_count')
+    red_blood_cell_count = request.form.get('red_blood_cell_count')
+    hypertension = request.form.get('hypertension')
+    diabetes_mellitus = request.form.get('diabetes_mellitus')
+    coronary_artery_disease = request.form.get('coronary_artery_disease')
+    appetite = request.form.get('appetite')
+    peda_edema = request.form.get('peda_edema')
+    aanemia = request.form.get('aanemia')
+
+    # Prepare user input for prediction
+    user_input = [
+        float(age), float(blood_pressure), float(specific_gravity), float(albumin), float(sugar),
+        float(red_blood_cells), float(pus_cell), float(pus_cell_clumps), float(bacteria),
+        float(blood_glucose_random), float(blood_urea), float(serum_creatinine), float(sodium),
+        float(potassium), float(haemoglobin), float(packed_cell_volume), float(white_blood_cell_count),
+        float(red_blood_cell_count), float(hypertension), float(diabetes_mellitus), float(coronary_artery_disease),
+        float(appetite), float(peda_edema), float(aanemia)
+    ]
+    
+    # Make prediction
+    prediction = kidney_disease_model.predict([user_input])
+    result = "The person has Kidney's disease" if prediction[0] == 1 else "The person does not have Kidney's disease"
+    
+    return render_template('result.html', result=result)
+
+@app.route('/predict_heart', methods=['POST'])
+def predict_heart():
+    # Extract form data
+    age = request.form.get('age')
+    sex = request.form.get('sex')
+    cp = request.form.get('cp')
+    trestbps = request.form.get('trestbps')
+    chol = request.form.get('chol')
+    fbs = request.form.get('fbs')
+    restecg = request.form.get('restecg')
+    thalach = request.form.get('thalach')
+    exang = request.form.get('exang')
+    oldpeak = request.form.get('oldpeak')
+    slope = request.form.get('slope')
+    ca = request.form.get('ca')
+    thal = request.form.get('thal')
+
+    # Prepare user input for prediction
+    user_input = [float(age), float(sex), float(cp), float(trestbps), float(chol), float(fbs), float(restecg), float(thalach), float(exang), float(oldpeak), float(slope), float(ca), float(thal)]
+    
+    # Make prediction
+    prediction = heart_disease_model.predict([user_input])
+    result = "This person is having heart disease" if prediction[0] == 1 else "This person does not have any heart disease"
+    
+    return render_template('result.html', result=result)
+
+# @app.route('/predict_diabetes', methods=['POST'])
+# def predict_diabetes():
+#     # Extract form data
+#     pregnancies = request.form.get('pregnancies')
+#     glucose = request.form.get('glucose')
+#     # ...extract other fields...
+#     user_input = [float(pregnancies), float(glucose), ...]
+#     prediction = diabetes_model.predict([user_input])
+#     result = "The person has diabetic" if prediction[0] == 1 else "The person has no diabetic"
+#     return render_template('result.html', result=result)
+
+@app.route('/get_detailed_info', methods=['POST'])
+def get_detailed_info():
+    data = request.json
+    model = data['model']
+    prediction = data['prediction']
+    
+    # Find the disease with the highest confidence score
+    highest_confidence = max(prediction, key=lambda x: x['score'])
+    disease = highest_confidence['label']
+    
+    # Prepare the payload for the Gemini API
+    payload = {
+        'disease': disease,
+        'model': model
+    }
+
+    api_key = 'AIzaSyB-CJ12ikMfhhC3vguN00-mQInIGWw7Z5E'
+    
+    # Define the headers including the API key
+    headers = {
+        'Authorization': f'Bearer {api_key}',
+        'Content-Type': 'application/json'
+    }
+    
+    # Send the request to the Gemini API
+    response = requests.post('https://diseaseinfo.onrender.com', json=payload, headers=headers)
+    
+    if response.status_code == 200:
+        details = response.json().get('details', 'No details available.')
+    else:
+        details = 'Failed to fetch details from the Gemini API.'
+    
+    return jsonify({'details': details})
+
+@app.route('/get_explanation', methods=['GET'])
+def get_explanation():
+    disease = request.args.get('disease')
+    
+    if not disease:
+        return jsonify({'explanation': 'Disease not specified.'}), 400
+    
+    # Prepare the payload for the local disease info endpoint
+    payload = {
+        'disease': disease
+    }
+
+    try:
+        # Send the request to the local disease info endpoint
+        response = requests.post('http://127.0.0.1:5002/v1/disease_info', json=payload)
+        response.raise_for_status()
+
+        # Process the response from the local disease info endpoint
+        data = response.json()
+        explanation = data.get('info', 'No explanation available.')
+
+        return jsonify({'explanation': explanation})
+
+    except requests.exceptions.RequestException as e:
+        return jsonify({'explanation': f"Failed to fetch explanation from the Gemini API: {e}"}), 500
+    except Exception as e:
+        return jsonify({'explanation': f"An unexpected error occurred: {e}"}), 500
+
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5001)
