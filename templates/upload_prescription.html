@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Prescription</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+    </style>
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.5; color: #1a1a1a;">
+    <div style="min-height: 100vh; padding: 1.5rem; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #EBF4FF 0%, #E0E7FF 100%);">
+        <div style="width: 100%; max-width: 36rem; background: white; border-radius: 1rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); padding: 2rem;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <svg style="color: #9CA3AF; margin-bottom: 1rem;" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                <h1 style="font-size: 1.875rem; font-weight: 700; color: #1a1a1a; margin-bottom: 0.5rem;">Upload Prescription</h1>
+                <p style="color: #666;">Upload your prescription in PNG, JPG, or JPEG format</p>
+            </div>
+
+            <form action="{{ url_for('upload_prescription') }}" method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div style="border: 2px dashed #CBD5E0; border-radius: 0.5rem; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.borderColor='#3B82F6'; this.style.backgroundColor='#EBF4FF';" onmouseout="this.style.borderColor='#CBD5E0'; this.style.backgroundColor='transparent';">
+                    <input type="file" name="file" accept=".png, .jpg, .jpeg" required id="file-upload" style="display: none;">
+                    <label for="file-upload" style="cursor: pointer;">
+                        <div style="color: #666;">
+                            <p style="font-weight: 500; color: #1a1a1a; margin-bottom: 0.25rem;">Click to browse or drag and drop</p>
+                            <p style="font-size: 0.875rem;">Maximum file size: 5MB</p>
+                        </div>
+                    </label>
+                </div>
+
+                <button type="submit" style="width: 100%; background-color: #2563EB; color: white; font-weight: 600; padding: 0.75rem 1.5rem; border: none; border-radius: 0.5rem; cursor: pointer; transition: background-color 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 0.5rem;" onmouseover="this.style.backgroundColor='#1D4ED8';" onmouseout="this.style.backgroundColor='#2563EB';">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    Upload Prescription
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('file-upload');
+        const dropZone = fileInput.parentElement;
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#3B82F6';
+            dropZone.style.backgroundColor = '#EBF4FF';
+        });
+
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#CBD5E0';
+            dropZone.style.backgroundColor = 'transparent';
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#CBD5E0';
+            dropZone.style.backgroundColor = 'transparent';
+            
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+            }
+        });
+    </script>
+</body>
+</html>

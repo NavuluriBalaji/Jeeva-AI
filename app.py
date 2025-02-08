@@ -32,6 +32,9 @@ pipelines = {
     # "whole_body_CT": pipeline("image-segmentation", model="project-lighter/whole_body_segmentation")
 }
 
+# Define OCR pipeline
+ocr_pipeline = pipeline("image-to-text", model="jinhybr/OCR-Donut-CORD")
+
 # # Initialize Firebase
 # cred = credentials.Certificate("admin_sdk.json")
 # firebase_admin.initialize_app(cred)
@@ -445,6 +448,48 @@ def get_explanation():
         return jsonify({'explanation': f"Failed to fetch explanation from the Gemini API: {e}"}), 500
     except Exception as e:
         return jsonify({'explanation': f"An unexpected error occurred: {e}"}), 500
+
+@app.route('/upload_prescription', methods=['GET', 'POST'])
+def upload_prescription():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return 'No file part', 400
+
+        file = request.files['file']
+
+        if file.filename == '':
+            return 'No selected file', 400
+
+        if file and file.filename.lower().endswith(('.png', '.jpg', '.jpeg')):
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            file.save(filepath)
+
+            # Load the image and extract text
+            image = Image.open(filepath)
+            extracted_text = ocr_pipeline(image)
+
+            # Cleanup uploaded file
+            os.remove(filepath)
+
+            # Extract the generated text from the response
+            raw_text = extracted_text[0]['generated_text']
+
+            # Save the raw text to a file
+            text_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'prescription.txt')
+            with open(text_file_path, 'w') as text_file:
+                text_file.write(raw_text)
+
+            # Return raw text and download link
+            return render_template('prescription_result.html', extracted_text=raw_text, text_file_path=text_file_path)
+
+    return render_template('upload_prescription.html')
+
+@app.route('/download_prescription')
+def download_prescription():
+    text_file_path = request.args.get('file_path')
+    if text_file_path and os.path.exists(text_file_path):
+        return send_file(text_file_path, as_attachment=True, download_name='prescription.txt')
+    return 'File not found', 404
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
