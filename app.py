@@ -15,6 +15,7 @@ import os
 from PIL import Image
 from fpdf import FPDF
 import requests
+import sqlite3
 
 app = Flask(__name__)
 
@@ -334,7 +335,7 @@ def predict_kidney():
     peda_edema = request.form.get('peda_edema')
     aanemia = request.form.get('aanemia')
 
-    # Prepare user input for prediction
+    
     user_input = [
         float(age), float(blood_pressure), float(specific_gravity), float(albumin), float(sugar),
         float(red_blood_cells), float(pus_cell), float(pus_cell_clumps), float(bacteria),
@@ -344,7 +345,7 @@ def predict_kidney():
         float(appetite), float(peda_edema), float(aanemia)
     ]
     
-    # Make prediction
+
     prediction = kidney_disease_model.predict([user_input])
     result = "The person has Kidney's disease" if prediction[0] == 1 else "The person does not have Kidney's disease"
     
@@ -352,7 +353,7 @@ def predict_kidney():
 
 @app.route('/predict_heart', methods=['POST'])
 def predict_heart():
-    # Extract form data
+    
     age = request.form.get('age')
     sex = request.form.get('sex')
     cp = request.form.get('cp')
@@ -367,10 +368,10 @@ def predict_heart():
     ca = request.form.get('ca')
     thal = request.form.get('thal')
 
-    # Prepare user input for prediction
+    
     user_input = [float(age), float(sex), float(cp), float(trestbps), float(chol), float(fbs), float(restecg), float(thalach), float(exang), float(oldpeak), float(slope), float(ca), float(thal)]
     
-    # Make prediction
+ 
     prediction = heart_disease_model.predict([user_input])
     result = "This person is having heart disease" if prediction[0] == 1 else "This person does not have any heart disease"
     
@@ -405,13 +406,11 @@ def get_detailed_info():
 
     api_key = 'AIzaSyB-CJ12ikMfhhC3vguN00-mQInIGWw7Z5E'
     
-    # Define the headers including the API key
     headers = {
         'Authorization': f'Bearer {api_key}',
         'Content-Type': 'application/json'
     }
     
-    # Send the request to the Gemini API
     response = requests.post('https://diseaseinfo.onrender.com', json=payload, headers=headers)
     
     if response.status_code == 200:
@@ -428,17 +427,16 @@ def get_explanation():
     if not disease:
         return jsonify({'explanation': 'Disease not specified.'}), 400
     
-    # Prepare the payload for the local disease info endpoint
     payload = {
         'disease': disease
     }
 
     try:
-        # Send the request to the local disease info endpoint
+
         response = requests.post('http://127.0.0.1:5002/v1/disease_info', json=payload)
         response.raise_for_status()
 
-        # Process the response from the local disease info endpoint
+
         data = response.json()
         explanation = data.get('info', 'No explanation available.')
 
@@ -464,22 +462,22 @@ def upload_prescription():
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
             file.save(filepath)
 
-            # Load the image and extract text
+            
             image = Image.open(filepath)
             extracted_text = ocr_pipeline(image)
 
-            # Cleanup uploaded file
+            
             os.remove(filepath)
 
-            # Extract the generated text from the response
+            
             raw_text = extracted_text[0]['generated_text']
 
-            # Save the raw text to a file
+            
             text_file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'prescription.txt')
             with open(text_file_path, 'w') as text_file:
                 text_file.write(raw_text)
 
-            # Return raw text and download link
+           
             return render_template('prescription_result.html', extracted_text=raw_text, text_file_path=text_file_path)
 
     return render_template('upload_prescription.html')
@@ -490,6 +488,59 @@ def download_prescription():
     if text_file_path and os.path.exists(text_file_path):
         return send_file(text_file_path, as_attachment=True, download_name='prescription.txt')
     return 'File not found', 404
+
+
+def init_db():
+    conn = sqlite3.connect('portalauthentication.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            unique_id TEXT NOT NULL UNIQUE
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+init_db()
+
+@app.route('/authenticate', methods=['POST'])
+def authenticate():
+    data = request.json
+    user_name = data.get('userName')
+    user_id = data.get('userId')
+
+    conn = sqlite3.connect('portalauthentication.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM users WHERE name = ? AND unique_id = ?', (user_name, user_id))
+    user = cursor.fetchone()
+    conn.close()
+
+    if user:
+        return jsonify({'success': True, 'redirect_url': 'http://127.0.0.1:8000/'})
+    else:
+        return jsonify({'success': False, 'message': 'You are not authorized to access the portal'})
+
+
+@app.route('/authenticate', methods=['GET', 'POST'])
+def authenticate_page():
+    if request.method == 'POST':
+        data = request.json
+        user_name = data.get('userName')
+        user_id = data.get('userId')
+
+        conn = sqlite3.connect('portalauthentication.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM users WHERE name = ? AND unique_id = ?', (user_name, user_id))
+        user = cursor.fetchone()
+        conn.close()
+
+        if user:
+            return jsonify({'success': True, 'redirect_url': 'http://127.0.0.1:8000/'})
+        else:
+            return jsonify({'success': False, 'message': 'You are not authorized to access the portal'})
+    return render_template('authenticate.html')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

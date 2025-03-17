@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sahayak Health</title>
+    <title>Jeeva Health</title>
     <link href="https://unpkg.com/lucide-icons/dist/umd/lucide-icons.js" rel="stylesheet">
     <style>
         /* Reset and base styles */
@@ -305,16 +305,17 @@
             <div class="header-content">
                 <a href="#" class="logo">
                     <i data-lucide="heart"></i>
-                    <span>Sahayak Health</span>
+                    <span>JEEVA AI</span>
                 </a>
                 
                 <nav class="nav-links">
                     <a href="#">Home</a>
                     <a href="assistant">Assistant</a>
                     <a href="predict">Prediction</a>
-                    <a href="http://127.0.0.1:8000/">Hospital Management</a>
-                    <a href="#">Reminders</a>
+                    <a href="{{ url_for('authenticate_page') }}" id="hospitalManagementBtn">Hospital Management</a>
+                    <a href="reminder">Reminders</a>
                     <a href="appointment">Appointment</a>
+                    <a href="{{ url_for('upload_prescription') }}">Upload Prescription</a>
                 </nav>
 
                 <div class="header-actions">
@@ -339,9 +340,6 @@
                     <h1>Your Health, Our Priority</h1>
                     <p>Advanced AI-powered healthcare assistance available 24/7. Get instant medical guidance, schedule appointments, and track your health journey.</p>
                     <button class="btn btn-primary">Get Started</button>
-                    <a href="{{ url_for('upload_prescription') }}">
-                        <button>Upload Prescription</button>
-                    </a>
                 </div>
                 <div class="hero-image">
                     <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Healthcare">
@@ -411,7 +409,7 @@
             <div class="footer-grid">
                 <div class="footer-column">
                     <h3>About Us</h3>
-                    <p>Sahayak Health is committed to providing accessible healthcare solutions through advanced AI technology.</p>
+                    <p>Jeeva Health is committed to providing accessible healthcare solutions through advanced AI technology.</p>
                 </div>
                 <div class="footer-column">
                     <h3>Quick Links</h3>
@@ -425,9 +423,9 @@
                 <div class="footer-column">
                     <h3>Contact</h3>
                     <ul class="footer-links">
-                        <li>Kalasalingam Academy of Research and Education</li>
+                        <li>AVK Tech Solution INC</li>
                         <li>Phone: +91 9346830134</li>
-                        <li>Email: contact@sahayak.health</li>
+                        <li>Email: contact@Jeeva.health</li>
                     </ul>
                 </div>
                 <div class="footer-column">
@@ -439,12 +437,14 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Sahayak Health. All rights reserved.</p>
+                <p>&copy; 2025 Jeeva Health. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
+    <script src="static/js/facial_recognition.js"></script>
     <script>
         lucide.createIcons();
 
@@ -467,6 +467,57 @@
                 });
             }
         });
+
+        document.getElementById('hospitalManagementBtn').addEventListener('click', () => {
+            document.getElementById('hospitalAuthModal').style.display = 'block';
+        });
+
+        document.getElementById('hospitalAuthForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+            const hospitalName = document.getElementById('hospitalName').value;
+            const hospitalId = document.getElementById('hospitalId').value;
+
+            fetch('/hospital_management', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ hospitalName, hospitalId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = "http://127.0.0.1:8000/";
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
     </script>
+
+    <!-- Add this modal for user authentication -->
+    <div id="authModal" style="display: none;">
+        <form id="authForm">
+            <label for="userName">Name:</label>
+            <input type="text" id="userName" name="userName" required>
+            <label for="userId">Unique ID:</label>
+            <input type="text" id="userId" name="userId" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- Add this modal for hospital management authentication -->
+    <div id="hospitalAuthModal" style="display: none;">
+        <form id="hospitalAuthForm">
+            <label for="hospitalName">Hospital Name:</label>
+            <input type="text" id="hospitalName" name="hospitalName" required>
+            <label for="hospitalId">Hospital ID:</label>
+            <input type="text" id="hospitalId" name="hospitalId" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 </body>
 </html>

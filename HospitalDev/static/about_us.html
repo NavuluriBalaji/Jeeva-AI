@@ -1,120 +1,197 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>HospitalManagementSystem</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="vendor/fontawesome/css/font-awesome.min.css">
-
-    <!-- =============== VENDOR STYLES ===============-->
-    <!-- FONT AWESOME-->
-
-    <!-- =============== PAGE VENDOR STYLES ===============-->
-    <!-- =============== BOOTSTRAP STYLES ===============-->
-    <!-- =============== APP STYLES ===============-->
-
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management System - Creators</title>
     <style>
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
             font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Float four columns side by side */
-        .column {
-            float: left;
-            position: relative;
-            left: 27%;
-            width: 25%;
-            padding: 0 10px;
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
-        /* Remove extra left and right margins, due to padding */
-        .row {
-            margin: 0 -5px;
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 0;
         }
 
-        /* Clear floats after the columns */
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* Responsive columns */
-        @media screen and (max-width: 600px) {
-            .column {
-                width: 100%;
-                display: block;
-                margin-bottom: 20px;
-            }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
         }
 
-        /* Style the counter cards */
-        .card {
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            padding: 16px;
+        .nav-links a {
+            color: #666;
+            text-decoration: none;
+            margin-left: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #333;
+        }
+
+        .nav-links a.active {
+            color: #333;
+            font-weight: bold;
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem 0;
+        }
+
+        h1 {
             text-align: center;
-            font-size: 29px;
-
-
+            margin-bottom: 2rem;
+            color: #333;
         }
 
+        .creators {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
 
-        body {
-            background-image: url("images/light.png");
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-size: cover;
+        .creator-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 300px;
+            display: flex;
+            align-items: center;
+        }
+
+        .creator-icon {
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 1rem;
+        }
+
+        .creator-icon svg {
+            width: 30px;
+            height: 30px;
+            fill: #666;
+        }
+
+        .creator-info h2 {
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .creator-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .profile {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .profile img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .social-links a {
+            margin: 0 0.5rem;
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #333;
+        }
+
+        footer {
+            background-color: #fff;
+            text-align: center;
+            padding: 1rem 0;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+            width: 100%;
+        }
+
+        @media (max-width: 600px) {
+            .creators {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
-
 <body>
-    <header class="topnavbar-wrapper">
-        <!-- START Top Navbar-->
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-               <div class="navbar-header">
-                  <a class="navbar-brand" href="/"><b>Hospital Management System</b></a>
-               </div>
-               <ul class="nav navbar-nav">
-                  <li class="active"><a href="/"><b>Home</b></a></li>
-               </ul>
-               <ul class="nav navbar-nav navbar-right">
-                  <li class="active"><a href="about_us.html"><b>Creators</b></a></li>
-               </ul>
+    <header>
+        <nav class="container">
+            <a href="/" class="logo">Hospital Management System</a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="#" class="active">Creators</a>
             </div>
-         </nav>
-        <!-- END Top Navbar-->
+        </nav>
     </header>
-    <div class="content-heading">
-        <center>
-            <h1 style="color:lightgray;">Creators</h1><br><br><br>
-        </center>
-        <small data-localize="dashboard.WELCOME"></small>
-    </div>
 
-
-    <div class="column">
-        <div class="card text-white bg-dark mb-3" style="max-width: 36rem;background-color: lightgray;">
-            <div class="card-body">
-                <div class="card-title"><i class="fa fa-user"></i>&nbsp;   &nbsp;Adarsh Ninganur</div>
+    <main class="container">
+        <h1>Creator</h1>
+        <div class="profile">
+            
+            <h2>Navuluri Balaji</h2>
+            <div class="social-links">
+                <a href="https://x.com/NavulruiBalaji" target="_blank">Twitter</a>
+                <a href="https://github.com/NavuluriBalaji" target="_blank">GitHub</a>
+                <a href="http://www.linkedin.com/in/navuluri-balaji" target="_blank">LinkedIn</a>
+                <a href="https://balajinavuluri.vercel.app/" target="_blank">Portfolio</a>
+                <a href="https://www.google.com/search?sca_esv=1efd172859308584&rlz=1C1RXQR_enIN1111IN1111&sxsrf=AHTn8zrVgkdfoI6M0loIvJTdiH9_3c_ngA:1739547012393&q=navuluri+balaji&udm=2&fbs=ABzOT_CA2xG0awbxKySDVQNzfZrmNyuWz_ixd6JPlCfutzOyYqumcusJtSicOGTpZEDxGi7IODp-LKtUtOXp7qj2YIY5s2yMJ-OWowe4CPcQfti9JR2oB5CFAxhmdHpJUOM2ivnp5ZkomauecnVB1S25fNZ7jSlcrte7BHbkRn8MmR-2y3wQZtUTeVNJg9mJVd4C7KKZwoBs925aho8RSTxUePE2q2ip3g&sa=X&ved=2ahUKEwioo_nNvcOLAxWXTmwGHXWeCw8QtKgLegQIEBAB&biw=1920&bih=911&dpr=1#vhid=U2AltYaMsHRBLM&vssid=mosaic" target="_blank">Google Search</a>
             </div>
         </div>
-    </div>
+        <div class="creators">
 
-    <div class="column">
-        <div class="card text-white bg-dark mb-3" style="max-width: 36rem;background-color: lightgray;">
-            <div class="card-body">
-                <div class="card-title"><i class="fa fa-user"></i>&nbsp;   &nbsp;Aryan Prasad</div>
-            </div>
         </div>
-    </div>
+    </main> 
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Hospital Management System. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
-
 </html>

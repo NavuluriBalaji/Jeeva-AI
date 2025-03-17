@@ -1,221 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-   <meta name="description" content="Bootstrap Admin App + jQuery">
-   <meta name="keywords" content="app, responsive, jquery, bootstrap, dashboard, admin">
-   <title>Medication</title>
-   <!-- =============== VENDOR STYLES ===============-->
-   <!-- FONT AWESOME-->
-   <link rel="stylesheet" href="vendor/fontawesome/css/font-awesome.min.css">
-   <!-- SIMPLE LINE ICONS-->
-   <link rel="stylesheet" href="vendor/simple-line-icons/css/simple-line-icons.css">
-   <!-- ANIMATE.CSS-->
-   <link rel="stylesheet" href="vendor/animate.css/animate.min.css">
-   <!-- WHIRL (spinners)-->
-   <link rel="stylesheet" href="vendor/whirl/dist/whirl.css">
-   <link rel="stylesheet" href="vendor/sweetalert/dist/sweetalert.css">
-   <!-- DATATABLES-->
-   <link rel="stylesheet" href="vendor/datatables-colvis/css/dataTables.colVis.css">
-   <link rel="stylesheet" href="vendor/datatables/media/css/dataTables.bootstrap.css">
-   <link rel="stylesheet" href="vendor/dataTables.fontAwesome/index.css">
-
-
-   <!-- =============== PAGE VENDOR STYLES ===============-->
-   <!-- =============== BOOTSTRAP STYLES ===============-->
-   <link rel="stylesheet" href="app/css/bootstrap.css" id="bscss">
-   <link rel="stylesheet" href="vendor/datepicker/build/css/bootstrap-datetimepicker.min.css">
-   <!-- =============== APP STYLES ===============-->
-   <link rel="stylesheet" href="app/css/app.css" id="maincss">
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-   <style>
- a:hover {
-         text-decoration: none !important;
-      }
-
-      html {
-         position: relative;
-         /* Allows the footer to notice content height */
-         min-height: 100vh;
-         /* My page will always take the full screen */
-      }
-
-      footer {
-         position: absolute;
-         bottom: 0;
-         /* I want to be on the bottom... */
-         left: 0;
-         /* ...and to the left */
-      }
-
-      body {
-         background-image: url("/images/hospital.png");
-         background-repeat: no-repeat;
-         background-size: cover;
-
-      }
-
-      h1 {
-         color: navy;
-      }
-
-      .content-heading,
-      section {
-         background-image: url("/images/dark.png");
-      }
-   </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Hospital Management System">
+    <meta name="keywords" content="hospital, healthcare, management, medication">
+    <title>Medication Management</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        body {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1587854692152-cbe660dbde88?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .modal {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+    </style>
 </head>
 
-<body class="layout-h">
-   <div class="wrapper">
-      <!-- top navbar-->
-      <header class="topnavbar-wrapper">
-         <!-- START Top Navbar-->
-         <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-               <div class="navbar-header">
-                  <a class="navbar-brand" href="/"><b>Hospital Management System</b></a>
-               </div>
-               <ul class="nav navbar-nav">
-                  <li class="active"><a href="/"><b>Home</b></a></li>
-               </ul>
-               <ul class="nav navbar-nav navbar-right">
-                  <li class="active"><a href="about_us.html"><b>Creators</b></a></li>
-               </ul>
+<body class="min-h-screen bg-gray-100">
+    <div class="flex flex-col min-h-screen">
+        <!-- Navigation -->
+        <nav class="bg-gradient-to-r from-purple-800 to-purple-600 shadow-lg">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <a href="/" class="text-white text-xl font-bold">Hospital Management System</a>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <a href="/" class="text-white hover:text-purple-200 transition">Home</a>
+                        <a href="about_us.html" class="text-white hover:text-purple-200 transition">Creators</a>
+                    </div>
+                </div>
             </div>
-         </nav>
-         <!-- END Top Navbar-->
-      </header>
-      <!-- sidebar-->
+        </nav>
 
-      <!-- offsidebar-->
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-4 py-8">
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-3xl font-bold text-gray-800">Medication Management</h1>
+                    <button id="addMedication" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2 rounded-lg transition shadow-md">
+                        <i class="fas fa-pills mr-2"></i>Add Medication
+                    </button>
+                </div>
 
-      <!-- Main section-->
-      <section>
-         <!-- Page content-->
-         <div class="content-wrapper">
-            <div class="content-heading">
-               <!-- START Language list-->
-
-               <!-- END Language list    -->
-
-               <h1>Medication</h1>
-
-               <small data-localize="dashboard.WELCOME"></small>
-               <div class="pull-right">
-                  <div class="btn-group">
-
-                     <button style="bottom: 27px;" id="addMedication" class="mb-sm btn btn-primary" type="button">Add
-                        medication</button>
-
-                  </div>
-               </div>
+                <!-- Medication Table -->
+                <div class="overflow-x-auto">
+                    <table id="datatable4" class="w-full">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="px-4 py-3 text-left">Code</th>
+                                <th class="px-4 py-3 text-left">Name</th>
+                                <th class="px-4 py-3 text-left">Brand</th>
+                                <th class="px-4 py-3 text-left">Description</th>
+                                <th class="px-4 py-3"></th>
+                                <th class="px-4 py-3"></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
-            <div class="row">
-               <div class="col-lg-12">
-                  <div class="panel panel-default" style="padding: 15px;">
+        </main>
 
-                     <div class="table-responsive">
-                        <table id="datatable4" class="table table-striped">
-                           <thead>
-                              <tr>
-                                 <th style="width:15%">Code</th>
-                                 <th style="width:20%">Name</th>
-                                 <th style="width:25%">Brand</th>
-                                 <th style="width:25%">Description</th>
-                                 <th style="width:15%"></th>
-                                 <th style="width:15%"></th>
-                              </tr>
-                           </thead>
-                           <tbody></tbody>
-                        </table>
-                     </div>
-                  </div>
-               </div>
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-4">
+            <div class="container mx-auto px-4 text-center">
+                <span>&copy; 2024 - Hospital Management System</span>
             </div>
-         </div>
-      </section>
-   </div>
+        </footer>
+    </div>
 
-   <div id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" class="modal fade">
-      <div class="modal-dialog">
-         <div class="modal-content">
-            <div class="modal-header">
-               <button type="button" data-dismiss="modal" aria-label="Close" class="close">
-                  <span aria-hidden="true">&times;</span>
-               </button>
-               <h4 id="myModalLabel" class="modal-title">Medication</h4>
+    <!-- Modal -->
+    <div id="myModal" class="modal hidden fixed inset-0 z-50 overflow-auto flex items-center justify-center">
+        <div class="relative bg-white rounded-lg shadow-xl max-w-2xl w-full m-4">
+            <div class="px-6 py-4 border-b">
+                <div class="flex justify-between items-center">
+                    <h4 class="text-xl font-bold text-gray-800">Add Medication</h4>
+                    <button type="button" data-dismiss="modal" class="text-gray-400 hover:text-gray-500">
+                        <span class="text-2xl">&times;</span>
+                    </button>
+                </div>
             </div>
-            <div class="modal-body">
-               <form data-parsley-validate="" novalidate="" class="form-horizontal" id="detailform">
-                  <div class="form-group">
-                     <label class="col-lg-2 control-label">Code</label>
-                     <div class="col-lg-10">
-                        <input required type="text" name="code" class="form-control" placeholder="Code">
-                     </div>
-                  </div>
-                  <div class="form-group">
-                     <label class="col-lg-2 control-label">Name</label>
-                     <div class="col-lg-10">
-                        <input required type="text" name="name" class="form-control" placeholder="Name of Medicine">
-                     </div>
-                  </div>
-                  <div class="form-group">
-                     <label class="col-lg-2 control-label">Brand</label>
-                     <div class="col-lg-10">
-                        <input required type="text" name="brand" class="form-control" placeholder="Brand">
-                     </div>
-                  </div>
-
-                  <div class="form-group">
-                     <label class="col-lg-2 control-label">Description</label>
-
-                     <div class="col-lg-10">
-                        <input size="16" type="text" name="description" class="form-control" placeholder="Description">
-                     </div>
-
-                  </div>
-               </form>
+            <div class="px-6 py-4">
+                <form id="detailform" class="space-y-4">
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Code</label>
+                            <input required type="text" name="code" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200" placeholder="Enter medication code">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Name</label>
+                            <input required type="text" name="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200" placeholder="Enter medication name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Brand</label>
+                            <input required type="text" name="brand" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200" placeholder="Enter brand name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Description</label>
+                            <textarea name="description" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200" placeholder="Enter medication description"></textarea>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="modal-footer">
-               <button class="btn btn-default" data-dismiss="modal" onClick="window.location.reload();">Close</button>
-               <button id="savethemedication" type="button" class="btn btn-primary">Save changes</button>
+            <div class="px-6 py-4 border-t bg-gray-50 flex justify-end space-x-3">
+                <button class="px-4 py-2 border rounded-md text-gray-700 hover:bg-gray-100" data-dismiss="modal" onClick="window.location.reload();">Close</button>
+                <button id="savethemedication" type="button" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">Save changes</button>
             </div>
-         </div>
-      </div>
-   </div>
-   <footer style=  "color: #fff;">
-      <span>&copy; 2020 - Hospital Management System</span>
-    </footer>
-   <!-- =============== VENDOR SCRIPTS ===============-->
-   <!-- MODERNIZR-->
-   <script src="vendor/modernizr/modernizr.custom.js"></script>
-   <!-- JQUERY-->
-   <script src="vendor/jquery/dist/jquery.js"></script>
-   <!-- BOOTSTRAP-->
-   <script src="vendor/bootstrap/dist/js/bootstrap.js"></script>
-   <script src="vendor/datatables/media/js/jquery.dataTables.min.js"></script>
-   <script src="vendor/datatables-colvis/js/dataTables.colVis.js"></script>
-   <script src="vendor/datatables/media/js/dataTables.bootstrap.js"></script>
-   <script src="vendor/serialize/jquery.serializejson.js"></script>
-   <!-- STORAGE API-->
-   <script src="vendor/jQuery-Storage-API/jquery.storageapi.js"></script>
-   <!-- JQUERY EASING-->
-   <script src="vendor/jquery.easing/js/jquery.easing.js"></script>
-   <!-- ANIMO-->
-   <script src="vendor/animo.js/animo.js"></script>
-   <script src="vendor/parsley/parsley.min.js"></script>
-   <script src="vendor/sweetalert/dist/sweetalert.min.js"></script>
-   <!-- LOCALIZE-->
-   <script src="vendor/jquery-localize-i18n/dist/jquery.localize.js"></script>
-   <script src="vendor/datepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-   <!-- =============== PAGE VENDOR SCRIPTS ===============-->
-   <!-- =============== APP SCRIPTS ===============-->
-   <script src="app/js/app.js"></script>
-   <script src="js/medication.js"></script>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="vendor/modernizr/modernizr.custom.js"></script>
+    <script src="vendor/jquery/dist/jquery.js"></script>
+    <script src="vendor/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="vendor/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables-colvis/js/dataTables.colVis.js"></script>
+    <script src="vendor/datatables/media/js/dataTables.bootstrap.js"></script>
+    <script src="vendor/serialize/jquery.serializejson.js"></script>
+    <script src="vendor/jQuery-Storage-API/jquery.storageapi.js"></script>
+    <script src="vendor/jquery.easing/js/jquery.easing.js"></script>
+    <script src="vendor/animo.   js/animo.js"></script>
+    <script src="vendor/parsley/parsley.min.js"></script>
+    <script src="vendor/jquery-localize-i18n/dist/jquery.localize.js"></script>
+    <script src="app/js/app.js"></script>
+    <script src="js/medication.js"></script>
 </body>
-
 </html>

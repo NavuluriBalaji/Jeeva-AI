@@ -24,7 +24,7 @@ def disease_info():
         return jsonify({'error': 'Invalid request. Please provide a disease name in the JSON payload.'}), 400
 
     disease = payload.get('disease')
-    prompt = f"Provide detailed information about {disease}, including its description, symptoms, and treatment."
+    prompt = f"Provide detailed information about {disease}, including its description, symptoms, and treatment in about 200 words"
 
     headers = {'Content-Type': 'application/json'}
     gemini_payload = {"contents": [{"parts": [{"text": prompt}]}]}
