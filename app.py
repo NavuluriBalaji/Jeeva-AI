@@ -1,6 +1,6 @@
 from os import path
 # from flask import Flask
-from flask import Flask, render_template, request, jsonify, redirect, flash, url_for, send_file, make_response
+from flask import Flask, render_template, request, jsonify, redirect, flash, url_for, send_file, make_response, send_from_directory
 import firebase_admin
 from transformers import pipeline
 from firebase_admin import credentials, auth, exceptions
@@ -16,12 +16,17 @@ from PIL import Image
 from fpdf import FPDF
 import requests
 import sqlite3
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
 
 app.secret_key = 'ebcef35de0a1ea35afa1541de8e92573'  # Ensure this line is present and set to a unique and secret value
 app.config['UPLOAD_FOLDER'] = './uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+# Mapps API Key
+MAPPS_API_KEY = '074994fb1cc7a26816f77cca2ab6534d'
 
 # Define pipelines for each disease
 pipelines = {
@@ -542,6 +547,102 @@ def authenticate_page():
         else:
             return jsonify({'success': False, 'message': 'You are not authorized to access the portal'})
     return render_template('authenticate.html')
+
+@app.route('/emergency', methods=['GET', 'POST'])
+def emergency():
+    if request.method == 'POST':
+        category = request.form.get('category')
+        file = request.files.get('file')
+        user_location = request.form.get('location')  # Assume user provides location as "latitude,longitude"
+
+        if not category or not user_location:
+            return 'Category and location are required', 400
+
+        # Validate user_location format
+        try:
+            latitude, longitude = map(str.strip, user_location.split(','))
+            latitude = float(latitude)
+            longitude = float(longitude)
+        except (ValueError, TypeError):
+            return 'Invalid location format. Please provide latitude and longitude separated by a comma (e.g., 17.3850,78.4867).', 400
+
+        # Save uploaded image
+        if file and file.filename.lower().endswith(('.png', '.jpg', '.jpeg')):
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            file.save(filepath)
+        else:
+            filepath = None
+
+        # Find nearby hospitals using OpenStreetMap Nominatim API
+        hospitals = find_nearby_hospitals(latitude, longitude)
+        if not hospitals:
+            return 'No nearby hospitals found', 404
+
+        nearest_hospital = hospitals[0]
+        hospital_name = nearest_hospital['display_name']
+        hospital_address = nearest_hospital.get('address', {}).get('road', 'Address not available')
+
+        # Send notification to the hospital
+        send_notification(hospital_name, hospital_address, category, filepath)
+
+        return render_template('emergency_success.html', hospital_name=hospital_name, hospital_address=hospital_address, latitude=latitude, longitude=longitude)
+
+    return render_template('emergency.html')
+
+def find_nearby_hospitals(latitude, longitude):
+    """Find nearby hospitals using OpenStreetMap Nominatim API."""
+    url = "https://nominatim.openstreetmap.org/search"
+    params = {
+        'q': 'hospital',
+        'format': 'json',
+        'addressdetails': 1,
+        'limit': 5,
+        'lat': latitude,
+        'lon': longitude
+    }
+    headers = {
+        'User-Agent': 'JeevaAI/1.0 (your_email@example.com)'  # Replace with your email
+    }
+    response = requests.get(url, params=params, headers=headers)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Error fetching hospitals: {response.status_code}, {response.text}")
+        return []
+
+def send_notification(hospital_name, hospital_address, category, filepath):
+    # Simulate sending an email notification to the hospital
+    sender_email = "balajinbtt@gmail.com"
+    receiver_email = "navuluribalaji03@gmail.com"
+    subject = f"Emergency Alert: {category}"
+
+    body = f"""
+    An emergency case has been reported in the category: {category}.
+    Please prepare necessary equipment and dispatch an ambulance to the location.
+    Hospital: {hospital_name}
+    Address: {hospital_address}
+    """
+
+    msg = MIMEMultipart()
+    msg['From'] = sender_email
+    msg['To'] = receiver_email
+    msg['Subject'] = subject
+    msg.attach(MIMEText(body, 'plain'))
+
+    if filepath:
+        with open(filepath, 'rb') as attachment:
+            part = MIMEText(attachment.read(), 'base64', 'utf-8')
+            part.add_header('Content-Disposition', f'attachment; filename={os.path. basename(filepath)}')
+            msg.attach(part)
+
+    # Send email (configure SMTP server)
+    try:
+        with smtplib.SMTP('smtp.example.com', 587) as server:
+            server.starttls()
+            server.login(sender_email, 'your_email_password')
+            server.sendmail(sender_email, receiver_email, msg.as_string())
+    except Exception as e:
+        print(f"Failed to send email: {e}")
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

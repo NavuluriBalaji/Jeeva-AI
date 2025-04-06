@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Alert System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body style="
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+    font-family: 'Inter', sans-serif;
+    color: #1a1a1a;
+">
+    <main style="
+        background: white;
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 500px;
+        margin: 20px;
+    ">
+        <div style="
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        ">
+            <div style="
+                background: #ff4757;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            ">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+            </div>
+            <h1 style="
+                margin: 0;
+                font-size: 1.75rem;
+                color: #1a1a1a;
+                font-weight: 700;
+            ">Emergency Alert</h1>
+        </div>
+
+        <form action="/emergency" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <label for="category" style="
+                    font-weight: 500;
+                    color: #4a5568;
+                    font-size: 0.875rem;
+                ">Emergency Category</label>
+                <select name="category" id="category" required style="
+                    padding: 0.75rem;
+                    border: 2px solid #e2e8f0;
+                    border-radius: 10px;
+                    font-size: 1rem;
+                    outline: none;
+                    transition: border-color 0.2s;
+                    appearance: none;
+                    background: url('data:image/svg+xml;utf8,<svg fill="%234a5568" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat;
+                    background-position: right 0.5rem center;
+                    background-color: white;
+                ">
+                    <option value="" disabled selected>Select category</option>
+                    <option value="Heart">Heart Emergency</option>
+                    <option value="Brain">Brain Emergency</option>
+                    <option value="Accident">Accident</option>
+                </select>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <label for="location" style="
+                    font-weight: 500;
+                    color: #4a5568;
+                    font-size: 0.875rem;
+                ">Your Location</label>
+                <input type="text" name="location" id="location" required placeholder="Enter your location (e.g., 17.3850,78.4867)" style="
+                    padding: 0.75rem;
+                    border: 2px solid #e2e8f0;
+                    border-radius: 10px;
+                    font-size: 1rem;
+                    outline: none;
+                    transition: border-color 0.2s;
+                ">
+                <small style="color: gray;">Format: latitude,longitude (e.g., 17.3850,78.4867)</small>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <label for="file" style="
+                    font-weight: 500;
+                    color: #4a5568;
+                    font-size: 0.875rem;
+                ">Upload Image (optional)</label>
+                <div style="
+                    border: 2px dashed #e2e8f0;
+                    border-radius: 10px;
+                    padding: 1.5rem;
+                    text-align: center;
+                    background: #f8fafc;
+                ">
+                    <input type="file" name="file" id="file" accept=".png, .jpg, .jpeg" style="
+                        width: 100%;
+                        max-width: 100%;
+                    ">
+                </div>
+            </div>
+
+            <button type="submit" style="
+                background: #ff4757;
+                color: white;
+                border: none;
+                padding: 1rem;
+                border-radius: 10px;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: background-color 0.2s;
+                margin-top: 0.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+            ">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"/>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+                Send Emergency Alert
+            </button>
+        </form>
+    </main>
+</body>
+</html>

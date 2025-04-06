@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Alert Sent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body style="
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+    font-family: 'Inter', sans-serif;
+    color: #1a1a1a;
+">
+    <main style="
+        background: white;
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 800px;
+        margin: 20px;
+    ">
+        <div style="
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        ">
+            <div style="
+                background: #10b981;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            ">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+            </div>
+            <h1 style="
+                margin: 0;
+                font-size: 1.75rem;
+                color: #1a1a1a;
+                font-weight: 700;
+            ">Emergency Alert Sent Successfully</h1>
+        </div>
+
+        <div style="
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        ">
+            <div style="
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                margin-bottom: 1rem;
+            ">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                </svg>
+                <h2 style="
+                    margin: 0;
+                    font-size: 1.25rem;
+                    color: #065f46;
+                    font-weight: 600;
+                ">Help is on the way</h2>
+            </div>
+            <p style="
+                margin: 0;
+                color: #065f46;
+                line-height: 1.5;
+            ">The hospital has been notified and will dispatch an ambulance shortly.</p>
+        </div>
+
+        <div style="
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        ">
+            <div style="
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                margin-bottom: 1rem;
+            ">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                <h2 style="
+                    margin: 0;
+                    font-size: 1.25rem;
+                    color: #2d3748;
+                    font-weight: 600;
+                ">Nearest Hospital</h2>
+            </div>
+            <p style="
+                margin: 0 0 0.5rem 0;
+                color: #4a5568;
+                font-size: 1.125rem;
+                font-weight: 500;
+            ">{{ hospital_name }}</p>
+            <p style="
+                margin: 0;
+                color: #718096;
+                line-height: 1.5;
+            ">{{ hospital_address }}</p>
+        </div>
+
+        <div id="map" style="
+            height: 400px;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        "></div>
+
+        <script>
+            // Initialize the map
+            const map = L.map('map').setView([{{ latitude }}, {{ longitude }}], 15);
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add a marker for the hospital
+            L.marker([{{ latitude }}, {{ longitude }}]).addTo(map)
+                .bindPopup('<b>{{ hospital_name }}</b><br>{{ hospital_address }}')
+                .openPopup();
+        </script>
+    </main>
+</body>
+</html>
