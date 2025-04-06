@@ -208,6 +208,25 @@
     .symptom-button:hover {
       background-color: #ea580c;
     }
+
+    .language-selection {
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .language-selection label {
+      margin-right: 0.5rem;
+      font-size: 1rem;
+      color: #4b5563;
+    }
+
+    .language-selection select {
+      padding: 0.5rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      color: #4b5563;
+    }
   </style>
 </head>
 <body>
@@ -230,6 +249,15 @@
       </div>
 
       <div class="controls">
+        <div class="language-selection">
+          <label for="language">Select Language:</label>
+          <select id="language">
+            <option value="en-IN">English</option>
+            <option value="hi-IN">Hindi</option>
+            <option value="te-IN">Telugu</option>
+            <option value="ta-IN">Tamil</option>
+          </select>
+        </div>
         <div class="button-group">
           <button id="startButton" class="record-button start">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mic"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>
@@ -251,40 +279,19 @@
   </div>
 
   <script>
-    var subscriptionKey = '53a3231e62ad4d8388135e3308e4b632';
-    var tokenEndpoint = 'https://eastus.api.cognitive.microsoft.com/sts/v1.0/issuetoken';
-    var speechRecognitionEndpoint = 'https://eastus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1';
-
-    var authorizationToken = '';
-    
-    $.ajax({
-      type: 'POST',
-      url: tokenEndpoint,
-      headers: {
-        'Ocp-Apim-Subscription-Key': subscriptionKey
-      },
-      success: function (data) {
-        authorizationToken = data;
-      },
-      error: function (err) {
-        console.error('Error getting authorization token:', err);
-      }
-    });
-
     var recognizer;
-    let selected_symptoms = [];
 
     function startRecognition() {
       const chatBox = document.querySelector('.chat-box');
+      const selectedLanguage = document.getElementById('language').value;
 
       recognizer = new webkitSpeechRecognition();
       recognizer.continuous = true;
       recognizer.interimResults = true;
-      recognizer.lang = 'en-IN';
+      recognizer.lang = selectedLanguage;
       recognizer.start();
 
       recognizer.onresult = function (event) {
-        selected_symptoms = [];
         var result = event.results[event.resultIndex];
         if (result.isFinal) {
           var transcribedText = result[0].transcript;
@@ -296,17 +303,10 @@
           chatBox.appendChild(userMessage);
 
           // Call Gemini API
-          var geminiPrompt = `
-            extract disease symptoms from this text: ${transcribedText}
-            change it to any one of the following:
-            ["skin_rash","nodal_skin_eruptions","continuous_sneezing","shivering","chills","joint_pain","stomach_pain","acidity","ulcers_on_tongue","muscle_wasting","vomiting","burning_micturition","spotting_urination","fatigue","weight_gain","anxiety","cold_hands_and_feets","mood_swings","weight_loss","restlessness","lethargy","patches_in_throat","irregular_sugar_level","cough","high_fever","sunken_eyes","breathlessness","sweating","dehydration","indigestion","headache","yellowish_skin","dark_urine","nausea","loss_of_appetite","pain_behind_the_eyes","back_pain","constipation","abdominal_pain","diarrhoea","mild_fever","yellow_urine","yellowing_of_eyes","acute_liver_failure","fluid_overload","swelling_of_stomach","swelled_lymph_nodes","malaise","blurred_and_distorted_vision","phlegm","throat_irritation","redness_of_eyes","sinus_pressure","runny_nose","congestion","chest_pain","weakness_in_limbs","fast_heart_rate","pain_during_bowel_movements","pain_in_anal_region","bloody_stool","irritation_in_anus","neck_pain","dizziness","cramps","tiredness","bruising","obesity","swollen_legs","swollen_blood_vessels","puffy_face_and_eyes","enlarged_thyroid","brittle_nails","swollen_extremeties","excessive_hunger","extra_marital_contacts","drying_and_tingling_lips","slurred_speech","knee_pain","hip_joint_pain","muscle_weakness","stiff_neck","swelling_joints","movement_stiffness","spinning_movements","loss_of_taste","loss_of_balance","unsteadiness","weakness_of_one_body_side","loss_of_smell","bladder_discomfort","foul_smell_of urine","continuous_feel_of_urine","passage_of_gases","internal_itching","toxic_look_(typhos)","depression","irritability","muscle_pain","altered_sensorium","red_spots_over_body","belly_pain","abnormal_menstruation","dischromic_patches","watering_from_eyes","increased_appetite","polyuria","family_history","mucoid_sputum","rusty_sputum","lack_of_concentration","visual_disturbances","receiving_blood_transfusion","receiving_unsterile_injections","coma","stomach_bleeding","distention_of_abdomen","history_of_alcohol_consumption","fluid_overload","blood_in_sputum","prominent_veins_on_calf","palpitations","painful_walking","pus_filled_pimples","blackheads","scurring","skin_peeling","silver_like_dusting","small_dents_in_nails","inflammatory_nails","blister","red_sore_around_nose","yellow_crust_ooze","itching"]
-            only respond with the symptom, no other text should be in the response
-          `;
-          let geminiKey = 'YOUR_GEMINI_API_KEY'; // Replace with your actual Gemini API key
-          
-          console.log('Sending request to Gemini API:', geminiPrompt);
+          const geminiPrompt = `Respond to the following input in ${selectedLanguage} with a clean format including headings and key points by removing bold text: "${transcribedText}"`;
+          const geminiKey = 'AIzaSyB-CJ12ikMfhhC3vguN00-mQInIGWw7Z5E'; // Replace with your actual Gemini API key
 
-          axios.post(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiKey}`, 
+          axios.post(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`, 
           {
             contents: [
               {
@@ -323,57 +323,23 @@
             }
           })
           .then(response => {
-            console.log('Gemini API response:', response);
-            var responseText = response.data.candidates[0].content.parts[0].text;
-            
+            const responseText = response.data.candidates[0].content.parts[0].text;
+
+            // Format the response
+            const formattedResponse = formatResponse(responseText);
+
             // Add AI response
             const aiMessage = document.createElement('div');
             aiMessage.className = 'message';
-            aiMessage.innerHTML = `<div class="message-content">It seems like you are feeling ${responseText}</div>`;
+            aiMessage.innerHTML = `<div class="message-content">${formattedResponse}</div>`;
             chatBox.appendChild(aiMessage);
-
-            if (["skin_rash","nodal_skin_eruptions","continuous_sneezing","shivering","chills","joint_pain","stomach_pain","acidity","ulcers_on_tongue","muscle_wasting","vomiting","burning_micturition","spotting_urination","fatigue","weight_gain","anxiety","cold_hands_and_feets","mood_swings","weight_loss","restlessness","lethargy","patches_in_throat","irregular_sugar_level","cough","high_fever","sunken_eyes","breathlessness","sweating","dehydration","indigestion","headache","yellowish_skin","dark_urine","nausea","loss_of_appetite","pain_behind_the_eyes","back_pain","constipation","abdominal_pain","diarrhoea","mild_fever","yellow_urine","yellowing_of_eyes","acute_liver_failure","fluid_overload","swelling_of_stomach","swelled_lymph_nodes","malaise","blurred_and_distorted_vision","phlegm","throat_irritation","redness_of_eyes","sinus_pressure","runny_nose","congestion","chest_pain","weakness_in_limbs","fast_heart_rate","pain_during_bowel_movements","pain_in_anal_region","bloody_stool","irritation_in_anus","neck_pain","dizziness","cramps","tiredness","bruising","obesity","swollen_legs","swollen_blood_vessels","puffy_face_and_eyes","enlarged_thyroid","brittle_nails","swollen_extremeties","excessive_hunger","extra_marital_contacts","drying_and_tingling_lips","slurred_speech","knee_pain","hip_joint_pain","muscle_weakness","stiff_neck","swelling_joints","movement_stiffness","spinning_movements","loss_of_taste","loss_of_balance","unsteadiness","weakness_of_one_body_side","loss_of_smell","bladder_discomfort","foul_smell_of urine","continuous_feel_of_urine","passage_of_gases","internal_itching","toxic_look_(typhos)","depression","irritability","muscle_pain","altered_sensorium","red_spots_over_body","belly_pain","abnormal_menstruation","dischromic_patches","watering_from_eyes","increased_appetite","polyuria","family_history","mucoid_sputum","rusty_sputum","lack_of_concentration","visual_disturbances","receiving_blood_transfusion","receiving_unsterile_injections","coma","stomach_bleeding","distention_of_abdomen","history_of_alcohol_consumption","fluid_overload","blood_in_sputum","prominent_veins_on_calf","palpitations","painful_walking","pus_filled_pimples","blackheads","scurring","skin_peeling","silver_like_dusting","small_dents_in_nails","inflammatory_nails","blister","red_sore_around_nose","yellow_crust_ooze","itching"].includes(responseText)) {
-              axios.get(`https://niyabackend.pythonanywhere.com/get_related_syms?s=${responseText}`)
-                .then((res) => {
-                  const aiPrompt = document.createElement('div');
-                  aiPrompt.className = 'message';
-                  aiPrompt.innerHTML = `<div class="message-content">Are you feeling any of the following symptoms?</div>`;
-                  chatBox.appendChild(aiPrompt);
-
-                  const buttonContainer = document.createElement('div');
-                  buttonContainer.style.display = 'flex';
-                  buttonContainer.style.flexWrap = 'wrap';
-                  buttonContainer.style.gap = '0.5rem';
-                  buttonContainer.style.margin = '1rem 0';
-
-                  res.data.forEach(symptom => {
-                    const button = document.createElement('button');
-                    button.className = 'symptom-button';
-                    button.textContent = symptom;
-                    button.onclick = () => {
-                      alert(`Selected ${symptom}`);
-                      selected_symptoms.push(symptom);
-                    };
-                    buttonContainer.appendChild(button);
-                  });
-
-                  const submitButton = document.createElement('button');
-                  submitButton.className = 'symptom-button';
-                  submitButton.textContent = 'Submit';
-                  submitButton.onclick = () => {
-                    window.location.href = `/recommend?symptoms=${selected_symptoms.join(',')}`;
-                  };
-                  buttonContainer.appendChild(submitButton);
-
-                  chatBox.appendChild(buttonContainer);
-                })
-                .catch(err => {
-                  console.error(err);
-                });
-            }
           })
           .catch(error => {
             console.error('Error calling Gemini API:', error);
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'message';
+            errorMessage.innerHTML = `<div class="message-content">Sorry, there was an error processing your request.</div>`;
+            chatBox.appendChild(errorMessage);
           });
         }
       };
@@ -390,6 +356,24 @@
         recognizer.stop();
       }
       $('#startButton').removeClass('pulse');
+    }
+
+    function formatResponse(responseText) {
+      // Split the response into lines and format as headings and key points
+      const lines = responseText.split('\n');
+      let formatted = '';
+
+      lines.forEach(line => {
+        if (line.trim().endsWith(':')) {
+          // Treat lines ending with ':' as headings
+          formatted += `<h3>${line.trim()}</h3>`;
+        } else if (line.trim()) {
+          // Treat other lines as key points
+          formatted += `<p>• ${line.trim()}</p>`;
+        }
+      });
+
+      return formatted;
     }
 
     $('#startButton').on('click', startRecognition);

@@ -34,7 +34,8 @@ pipelines = {
 }
 
 # Define OCR pipeline
-ocr_pipeline = pipeline("image-to-text", model="jinhybr/OCR-Donut-CORD")
+# ocr_pipeline = pipeline("image-to-text", model="jinhybr/OCR-Donut-CORD")
+ocr_pipeline = pipeline("image-to-text", model="nlpconnect/vit-gpt2-image-captioning")
 
 # # Initialize Firebase
 # cred = credentials.Certificate("admin_sdk.json")
