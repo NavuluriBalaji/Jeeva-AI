@@ -26,7 +26,7 @@ app.config['UPLOAD_FOLDER'] = './uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # Mapps API Key
-MAPPS_API_KEY = '074994fb1cc7a26816f77cca2ab6534d'
+MAPPS_API_KEY = 'Replace your Map API key'
 
 # Define pipelines for each disease
 pipelines = {
